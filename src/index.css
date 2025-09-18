@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&family=Outfit:wght@100..900&display=swap');
+@import 'tailwindcss';
+
+* {
+  box-sizing: border-box;
+  font-family: 'Outfit';
+}
+
+@theme {
+  --color-primary-50: #f0e8ff;
+  --color-primary-100: #d9cfff;
+  --color-primary-200: #b399ff;
+  --color-primary-300: #8c66ff;
+  --color-primary-400: #6633ff;
+  --color-primary-500: #5522e6; /* Base */
+  --color-primary-600: #441bb3;
+  --color-primary-700: #331580;
+  --color-primary-800: #220d4d;
+  --color-primary-900: #110622;
+
+  --color-accent-50: #e2f7fb;
+  --color-accent-100: #ffece8;
+  --color-accent-200: #ffd0c5;
+  --color-accent-300: #ffb3a1;
+  --color-accent-400: #ff8f75;
+  --color-accent-500: #ff603a; /* Base */
+  --color-accent-600: #e7441d;
+  --color-accent-700: #c42700;
+  --color-accent-800: #a12000;
+  --color-accent-900: #701700;
+  --font-nunito: 'Nunito Variable';
+  --font-merriweather: 'Merriweather';
+  --font-outfit: 'Outfit Variable', sans-serif;
+  --rounded-input-sm: 5px;
+  --rounded-input-md: 8px;
+  --rounded-input-lg: 10px;
+}
