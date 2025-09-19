@@ -12,9 +12,7 @@ export function useCreateZone() {
     onSuccess: (newZone) => {
       toast.success(`Zone "${newZone.name}" created successfully`);
       queryClient.invalidateQueries({ queryKey: ['zones'] }); // refresh zones list
-      setTimeout(() => {
-        navigate('/zones');
-      }, 2000);
+      navigate('/zones');
     },
     onError: (err) => {
       toast.error(err.message || 'Failed to create zone');

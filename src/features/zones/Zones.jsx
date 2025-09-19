@@ -1,4 +1,6 @@
 import { useZones } from './useZones';
+import { useDuplicateZone } from './useDuplicateZone';
+import { useDeleteZone } from './useDeleteZone';
 import Breadcrumb from '../../components/Breadcrumb';
 import PageHeading from '../../components/PageHeading';
 import Table from '../../components/Table';
@@ -7,6 +9,8 @@ import PrimaryLink from '../../components/PrimaryLink';
 
 export default function Zones() {
   const { zones, isLoadingZones } = useZones();
+  const { duplicateZone, isDuplicating } = useDuplicateZone();
+  const { deleteZone, isDeleting } = useDeleteZone();
 
   if (isLoadingZones) return <Loading />;
   return (
@@ -23,13 +27,20 @@ export default function Zones() {
           Create Zone
         </PrimaryLink>
       </PageHeading>
-      <Table $columntemplate="3fr_1.25fr_1.25fr_1.5fr_1.5fr_3.5fr">
+
+      <Table $columntemplate="1fr">
         <Table.Head>
           <Table.Heading>Zone Name</Table.Heading>
         </Table.Head>
         {zones?.map((zone) => (
-          <Table.Row href={`/zones/${zone._id}`}>
-            <Table.Item>{zone.name}</Table.Item>
+          <Table.Row key={zone._id} href={`/zones/${zone._id}`}>
+            <Table.Item>
+              <div>{zone.name}</div>
+              <div className="flex gap-2">
+                <Table.DeleteLink onClick={() => deleteZone(zone._id)} />
+                <Table.DuplicateLink onClick={() => duplicateZone(zone)} />
+              </div>
+            </Table.Item>
           </Table.Row>
         ))}
       </Table>

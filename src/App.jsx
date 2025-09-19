@@ -26,6 +26,7 @@ import UpdateUser from './features/users/UpdateUser';
 import CreateVehicle from './features/vehicles/CreateVehicle';
 import Vehicles from './features/vehicles/Vehicles';
 import UpdateZone from './features/zones/UpdateZone';
+import UpdateVehicle from './features/vehicles/UpdateVehicle';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ export default function App() {
                 <Route path="zones/:id" element={<UpdateZone />} />
                 <Route path="vehicles" element={<Vehicles />} />
                 <Route path="vehicles/create" element={<CreateVehicle />} />
+                <Route path="vehicles/:id" element={<UpdateVehicle />} />
                 <Route path="users" element={<Users />} />
                 <Route path="users/create" element={<CreateUser />} />
                 <Route path="users/:username" element={<UpdateUser />} />

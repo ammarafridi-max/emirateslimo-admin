@@ -12,9 +12,6 @@ export function useUpdateZone() {
     onSuccess: (updatedZone) => {
       toast.success(`Zone "${updatedZone.name}" updated successfully`);
       queryClient.invalidateQueries({ queryKey: ['zones'] }); // refresh list
-      setTimeout(() => {
-        navigate('/zones');
-      }, 2000);
     },
     onError: (err) => {
       toast.error(err.message || 'Failed to update zone');

@@ -40,6 +40,43 @@ export default function CreateZone() {
     const draw = new MapboxDraw({
       displayControlsDefault: false,
       controls: { polygon: true, trash: true },
+      styles: [
+        // Polygon fill
+        {
+          id: 'gl-draw-polygon-fill',
+          type: 'fill',
+          paint: {
+            'fill-color': '#14948f', // 🔹 your custom color
+            'fill-opacity': 0.4,
+          },
+        },
+        // Polygon outline
+        {
+          id: 'gl-draw-polygon-stroke-active',
+          type: 'line',
+          paint: {
+            'line-color': '#117f7a', // 🔹 outline color
+            'line-width': 2,
+          },
+        },
+        // Vertices (circle handles)
+        {
+          id: 'gl-draw-polygon-and-line-vertex-halo-active',
+          type: 'circle',
+          paint: {
+            'circle-radius': 6,
+            'circle-color': '#ffffff',
+          },
+        },
+        {
+          id: 'gl-draw-polygon-and-line-vertex-active',
+          type: 'circle',
+          paint: {
+            'circle-radius': 4,
+            'circle-color': '#14948f',
+          },
+        },
+      ],
     });
 
     map.addControl(draw);
@@ -101,24 +138,22 @@ export default function CreateZone() {
       />
       <PageHeading className="mb-5">Create Zones</PageHeading>
       <form onSubmit={handleSubmit}>
-        <div className="h-[450px] overflow-scroll flex flex-col gap-3 bg-white p-7 mt-5 rounded-xl shadow-lg">
-          <div className="flex gap-5">
-            {/* Map */}
+        <div className="bg-white p-7 rounded-xl shadow-lg">
+          <Input
+            placeholder="Enter Zone Name"
+            value={zoneName}
+            onChange={(e) => setZoneName(e.target.value)}
+          />
+        </div>
+        <div className="h-fit overflow-scroll flex flex-col gap-3 bg-white p-7 mt-5 rounded-xl shadow-lg">
+          <div className="gap-5">
             <div
               ref={mapContainer}
               id="map"
-              className="w-[60%] h-[350px] bg-gray-200 rounded-md"
+              className="w-[100%] h-[600px] bg-gray-200 rounded-md"
             />
 
-            {/* Sidebar */}
-            <div className="w-[40%] relative flex flex-col gap-3">
-              <Label>Zone Name</Label>
-              <Input
-                placeholder="Enter Zone Name"
-                value={zoneName}
-                onChange={(e) => setZoneName(e.target.value)}
-              />
-
+            <div className="w-[100%] relative flex flex-col gap-3">
               {/* <Label>Search</Label>
               <SelectCustom
                 value={value}

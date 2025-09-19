@@ -28,6 +28,7 @@ export default function UpdateZone() {
   const mapRef = useRef(null);
   const drawRef = useRef(null);
 
+  // Load zone details into state
   useEffect(() => {
     const zone = zones?.find((z) => z._id === zoneId);
     if (zone) {
@@ -37,7 +38,7 @@ export default function UpdateZone() {
   }, [zones, zoneId]);
 
   useEffect(() => {
-    if (mapRef.current || !polygon) return;
+    if (mapRef.current) return;
 
     const map = new mapboxgl.Map({
       container: mapContainer.current,
@@ -49,21 +50,58 @@ export default function UpdateZone() {
     const draw = new MapboxDraw({
       displayControlsDefault: false,
       controls: { polygon: true, trash: true },
+      styles: [
+        // 🔹 Polygon fill
+        {
+          id: 'gl-draw-polygon-fill',
+          type: 'fill',
+          paint: {
+            'fill-color': '#14948f',
+            'fill-opacity': 0.3,
+          },
+        },
+        // 🔹 Polygon outline
+        {
+          id: 'gl-draw-polygon-stroke-active',
+          type: 'line',
+          paint: {
+            'line-color': '#117f7a',
+            'line-width': 2,
+          },
+        },
+        // 🔹 Main vertices (outer white halo)
+        {
+          id: 'gl-draw-polygon-and-line-vertex-halo-active',
+          type: 'circle',
+          paint: {
+            'circle-radius': 6,
+            'circle-color': '#ffffff',
+          },
+        },
+        // 🔹 Main vertices (inner point)
+        {
+          id: 'gl-draw-polygon-and-line-vertex-active',
+          type: 'circle',
+          paint: {
+            'circle-radius': 4,
+            'circle-color': '#14948f', // 👈 main vertex color
+          },
+        },
+        // 🔹 Midpoints (add new vertex handles)
+        {
+          id: 'gl-draw-polygon-midpoint',
+          type: 'circle',
+          paint: {
+            'circle-radius': 4,
+            'circle-color': '#facc15', // 👈 yellow for midpoints only
+          },
+        },
+      ],
     });
 
     map.addControl(draw);
     mapRef.current = map;
     drawRef.current = draw;
-
-    map.on('load', () => {
-      // Load existing polygon/multipolygon onto map
-      draw.add({
-        id: 'zone-shape',
-        type: 'Feature',
-        properties: {},
-        geometry: polygon,
-      });
-    });
 
     function updatePolygons() {
       const data = draw.getAll();
@@ -85,9 +123,26 @@ export default function UpdateZone() {
     map.on('draw.create', updatePolygons);
     map.on('draw.update', updatePolygons);
     map.on('draw.delete', updatePolygons);
+  }, []);
+
+  useEffect(() => {
+    if (!mapRef.current || !drawRef.current || !polygon) return;
+
+    const draw = drawRef.current;
+
+    const featureIds = draw.getAll().features.map((f) => f.id);
+    if (featureIds.length > 0) {
+      draw.changeMode('direct_select', { featureId: featureIds[0] });
+    }
+
+    draw.add({
+      id: 'zone-shape',
+      type: 'Feature',
+      properties: {},
+      geometry: polygon,
+    });
   }, [polygon]);
 
-  // Handle update
   function handleSubmit(e) {
     e.preventDefault();
     if (!zoneName || !polygon) {
@@ -116,23 +171,21 @@ export default function UpdateZone() {
       <PageHeading className="mb-5">Update Zone</PageHeading>
 
       <form onSubmit={handleSubmit}>
-        <div className="h-[450px] overflow-scroll flex flex-col gap-3 bg-white p-7 mt-5 rounded-xl shadow-lg">
-          <div className="flex gap-5">
-            {/* Map */}
+        <div className="bg-white p-7 rounded-xl shadow-lg">
+          <Input
+            placeholder="Enter Zone Name"
+            value={zoneName}
+            onChange={(e) => setZoneName(e.target.value)}
+          />
+        </div>
+        <div className="h-fit overflow-scroll flex flex-col gap-3 bg-white p-7 mt-5 rounded-xl shadow-lg">
+          <div>
             <div
               ref={mapContainer}
-              className="w-[60%] h-[350px] bg-gray-200 rounded-md"
+              className="w-[100%] h-[600px] bg-gray-200 rounded-md"
             />
 
-            {/* Sidebar */}
-            <div className="w-[40%] relative flex flex-col gap-1">
-              <Label>Zone Name</Label>
-              <Input
-                placeholder="Enter Zone Name"
-                value={zoneName}
-                onChange={(e) => setZoneName(e.target.value)}
-              />
-
+            <div className="w-full relative flex flex-col gap-1">
               <PrimaryButton
                 className="mt-5"
                 type="submit"
@@ -146,7 +199,7 @@ export default function UpdateZone() {
                 onClick={() => deleteZone(zoneId)}
                 disabled={isUpdating || isDeleting}
               >
-                {isUpdating ? 'Deleting...' : 'Delete Zone'}
+                {isDeleting ? 'Deleting...' : 'Delete Zone'}
               </DeleteButton>
             </div>
           </div>

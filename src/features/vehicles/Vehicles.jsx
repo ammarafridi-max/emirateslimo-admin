@@ -1,11 +1,15 @@
 import { useVehicles } from './useVehicles';
+import { useDeleteVehicle } from './useDeleteVehicle';
 import Breadcrumb from '../../components/Breadcrumb';
 import PageHeading from '../../components/PageHeading';
 import Table from '../../components/Table';
 import PrimaryLink from '../../components/PrimaryLink';
+import { useDuplicateVehicle } from './useDuplicateVehicle';
 
 export default function Vehicles() {
   const { vehicles } = useVehicles();
+  const { deleteVehicle, isDeletingVehicle } = useDeleteVehicle();
+  const { duplicateVehicle, isDuplicatingVehicle } = useDuplicateVehicle();
 
   return (
     <>
@@ -31,14 +35,22 @@ export default function Vehicles() {
           <Table.Heading>Pricing</Table.Heading>
         </Table.Head>
         {vehicles?.map((vehicle) => (
-          <Table.Row>
+          <Table.Row href={`/vehicles/${vehicle._id}`}>
             <Table.Item>
-              {vehicle?.year} {vehicle?.brand} {vehicle?.model}
+              <div>
+                {vehicle?.year} {vehicle?.brand} {vehicle?.model}
+              </div>
+              <div className="flex gap-2">
+                <Table.DeleteLink onClick={() => deleteVehicle(vehicle?._id)} />
+                <Table.DuplicateLink
+                  onClick={() => duplicateVehicle(vehicle?._id)}
+                />
+              </div>
             </Table.Item>
             <Table.Item textAlign="center">{vehicle?.passengers}</Table.Item>
             <Table.Item textAlign="center">{vehicle?.luggage}</Table.Item>
             <Table.Item textAlign="center">{vehicle?.type}</Table.Item>
-            <Table.Item textAlign="center">{}</Table.Item>
+            <Table.Item textAlign="center">{vehicle?.class}</Table.Item>
             <Table.Item>
               <div className="flex">
                 <span className="font-medium mr-2">Starting Price: </span>

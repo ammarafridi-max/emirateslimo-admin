@@ -17,7 +17,7 @@ function Head({ children }) {
   const { $columntemplate } = useContext(TableContext);
   return (
     <div
-      className={`grid bg-gray-800 text-white gap-2.5 py-2.5 px-5 mb-2.5 items-center`}
+      className={`grid bg-primary-900 text-white gap-2.5 py-2.5 px-5 mb-2.5 items-center`}
       style={{ gridTemplateColumns: $columntemplate.replace(/_/g, ' ') }}
     >
       {children}
@@ -35,7 +35,7 @@ function Row({ children, onClick, href }) {
   const { $columntemplate } = useContext(TableContext);
   return (
     <a
-      className={`text-black grid gap-2.5 py-1.5 px-5 mb-1 rounded-sm items-center duration-200 cursor-pointer hover:bg-primary-200`}
+      className={`text-black grid gap-2.5 py-1.5 px-5 mb-1 rounded-sm items-center duration-200 cursor-pointer hover:bg-primary-100`}
       style={{ gridTemplateColumns: $columntemplate.replace(/_/g, ' ') }}
       href={href}
       onClick={onClick}
@@ -64,11 +64,45 @@ function Footer({ children }) {
   );
 }
 
+function DeleteLink({ onClick }) {
+  return (
+    <button
+      className="text-red-700 cursor-pointer hover:underline"
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick();
+      }}
+    >
+      Delete
+    </button>
+  );
+}
+
+function DuplicateLink({ onClick }) {
+  return (
+    <button
+      className="text-blue-700 cursor-pointer hover:underline"
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick();
+      }}
+    >
+      Duplicate
+    </button>
+  );
+}
+
 Table = Table;
 Table.Head = Head;
 Table.Heading = Heading;
 Table.Row = Row;
 Table.Item = Item;
 Table.Footer = Footer;
+Table.DeleteLink = DeleteLink;
+Table.DuplicateLink = DuplicateLink;
 
 export default Table;

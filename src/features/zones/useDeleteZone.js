@@ -18,9 +18,7 @@ export function useDeleteZone() {
     onSuccess: () => {
       toast.success('Zone deleted successfully');
       queryClient.invalidateQueries({ queryKey: ['zones'] }); // refresh list
-      setTimeout(() => {
-        navigate('/zones');
-      }, 2000);
+      navigate('/zones');
     },
     onError: (err) => {
       toast.error(err.message || 'Failed to delete zone');

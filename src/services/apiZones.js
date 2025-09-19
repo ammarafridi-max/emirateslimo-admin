@@ -44,3 +44,21 @@ export async function deleteZoneApi(id) {
 
   return true;
 }
+
+export async function duplicateZoneApi(zone) {
+  const { _id, createdAt, updatedAt, ...rest } = zone;
+
+  const res = await fetch(`${baseURL}/api/zones`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ...rest,
+      name: `${rest.name} Copy`,
+    }),
+  });
+
+  if (!res.ok) throw new Error('Could not duplicate zone');
+
+  const data = await res.json();
+  return data?.data?.zone;
+}

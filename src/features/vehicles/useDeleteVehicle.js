@@ -6,7 +6,13 @@ import toast from 'react-hot-toast';
 export function useDeleteVehicle() {
   const navigate = useNavigate();
   const { mutate: deleteVehicle, isLoading: isDeletingVehicle } = useMutation({
-    mutationFn: deleteVehicleApi,
+    mutationFn: async (id) => {
+      const confirmDelete = window.confirm(
+        'Are you sure you want to delete this vehicle?'
+      );
+      if (!confirmDelete) throw new Error('Delete cancelled');
+      return deleteVehicleApi(id);
+    },
     onSuccess: () => {
       toast.success('Vehicle deleted successfully');
       navigate('/vehicles');

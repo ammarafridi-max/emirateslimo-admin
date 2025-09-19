@@ -61,7 +61,7 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
       <button
         onClick={() => logout()}
         // disabled={!isAllowed}
-        className={`w-full flex items-center gap-2.5 font-light text-xl p-2.5 mb-1.25 rounded-sm duration-150 hover:bg-gray-100 hover:text-black cursor-pointer ${
+        className={`w-full flex items-center gap-2.5 font-light text-lg p-2.5 mb-1.25 rounded-sm duration-150 hover:bg-gray-100 hover:text-black cursor-pointer ${
           !isAllowed
             ? 'opacity-100 cursor-not-allowed'
             : 'bg-transparent text-white'
@@ -76,7 +76,7 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
   return (
     <NavLink
       to={href}
-      className={`flex items-center gap-2.5 font-light text-xl p-2.5 mb-1.25 rounded-sm duration-150 hover:bg-gray-100 hover:text-black ${
+      className={`flex items-center gap-2.5 font-light text-lg py-2 px-3 mb-1.25 rounded-sm duration-150 hover:bg-gray-100 hover:text-black ${
         isActive ? 'bg-gray-100 text-black' : 'bg-transparent text-white'
       } ${!isAllowed ? 'opacity-100' : ''}`}
     >
@@ -88,7 +88,7 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
 
 export default function Navigation() {
   return (
-    <div className="h-full bg-primary-700 p-4 flex flex-col justify-center">
+    <div className="h-full bg-primary-900 p-4 flex flex-col justify-center">
       <div>
         {links.map((link, i) => (
           <SidebarLink
