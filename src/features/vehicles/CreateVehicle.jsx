@@ -8,16 +8,29 @@ export default function CreateVehicle() {
   const { createVehicle, isCreatingVehicle } = useCreateVehicle();
   const { register, handleSubmit } = useForm();
 
-  function onSubmit(data) {
-    const vehicleData = {
-      ...data,
-      pricing: {
+  async function onSubmit(data) {
+    const formData = new FormData();
+
+    formData.append('image', data.featuredImage[0]);
+    formData.append('brand', data.brand);
+    formData.append('model', data.model);
+    formData.append('year', data.year);
+    formData.append('passengers', data.passengers);
+    formData.append('luggage', data.luggage);
+    formData.append('type', data.type);
+    formData.append('class', data.class);
+
+    // structured pricing
+    formData.append(
+      'pricing',
+      JSON.stringify({
         initialPrice: Number(data.initialPrice),
         pricePerHour: Number(data.pricePerHour),
         pricePerKm: Number(data.pricePerKm),
-      },
-    };
-    createVehicle(vehicleData);
+      })
+    );
+
+    createVehicle(formData);
   }
 
   return (

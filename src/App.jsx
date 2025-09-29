@@ -11,6 +11,7 @@ import AppLayout from './components/AppLayout';
 import Dashboard from './pages/Dashboard';
 import Login from './features/auth/Login';
 import PrivateRoutes from './pages/PrivateRoutes';
+import NotFound from './pages/NotFound';
 
 // Users
 import Users from './features/users/Users';
@@ -19,14 +20,24 @@ import CreateUser from './features/users/CreateUser';
 // Zones
 import Zones from './features/zones/Zones';
 import CreateZone from './features/zones/CreateZone';
+import UpdateZone from './features/zones/UpdateZone';
+
+// Vehicles
+import Vehicles from './features/vehicles/Vehicles';
+import CreateVehicle from './features/vehicles/CreateVehicle';
+import UpdateVehicle from './features/vehicles/UpdateVehicle';
+
+// Pricing
+import PricingList from './features/pricing/PricingList';
+import CreatePricing from './features/pricing/CreatePricing';
+import UpdatePricing from './features/pricing/UpdatePricing';
+
+// Bookings
+
+import Bookings from './features/bookings/Bookings';
 
 import MyAccount from './features/account/MyAccount';
-import NotFound from './pages/NotFound';
 import UpdateUser from './features/users/UpdateUser';
-import CreateVehicle from './features/vehicles/CreateVehicle';
-import Vehicles from './features/vehicles/Vehicles';
-import UpdateZone from './features/zones/UpdateZone';
-import UpdateVehicle from './features/vehicles/UpdateVehicle';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +69,10 @@ export default function App() {
                 <Route path="vehicles" element={<Vehicles />} />
                 <Route path="vehicles/create" element={<CreateVehicle />} />
                 <Route path="vehicles/:id" element={<UpdateVehicle />} />
+                <Route path="pricing" element={<PricingList />} />
+                <Route path="pricing/create" element={<CreatePricing />} />
+                <Route path="pricing/:id" element={<UpdatePricing />} />
+                <Route path="bookings" element={<Bookings />} />
                 <Route path="users" element={<Users />} />
                 <Route path="users/create" element={<CreateUser />} />
                 <Route path="users/:username" element={<UpdateUser />} />

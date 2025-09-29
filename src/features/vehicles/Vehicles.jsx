@@ -38,7 +38,7 @@ export default function Vehicles() {
           <Table.Row href={`/vehicles/${vehicle._id}`}>
             <Table.Item>
               <div>
-                {vehicle?.year} {vehicle?.brand} {vehicle?.model}
+                {vehicle?.brand} {vehicle?.model}
               </div>
               <div className="flex gap-2">
                 <Table.DeleteLink onClick={() => deleteVehicle(vehicle?._id)} />

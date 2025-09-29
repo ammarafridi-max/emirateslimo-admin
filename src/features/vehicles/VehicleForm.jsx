@@ -9,7 +9,7 @@ export default function VehicleForm({ register, onSubmit, isLoading }) {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="h-[450px] overflow-scroll flex flex-col bg-white p-7 mt-5 rounded-xl shadow-lg">
+      <div className="min-h-[450px] overflow-scroll flex flex-col bg-white p-7 mt-5 rounded-xl shadow-lg">
         <div className="flex gap-2 text-sm mb-5">
           {[
             {
@@ -57,6 +57,14 @@ function VehicleInformation({ register }) {
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
         <Label>Year</Label>
         <Input type="number" {...register('year')} />
+      </div>
+      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
+        <Label>Featured Image</Label>
+        <Input
+          type="file"
+          accept=".png,.jpeg,.jpg,.webp"
+          {...register('featuredImage')}
+        />
       </div>
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
         <Label>Passengers</Label>

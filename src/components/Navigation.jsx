@@ -2,11 +2,9 @@ import {
   HiOutlineUsers,
   HiOutlineTicket,
   HiOutlineHome,
-  HiArrowRightOnRectangle,
   HiOutlineUser,
 } from 'react-icons/hi2';
 import { NavLink, useLocation } from 'react-router-dom';
-import { PiAirplane } from 'react-icons/pi';
 import { useLogout } from '../features/auth/useLogout';
 import { useJwtData } from '../services/jwt';
 
@@ -36,17 +34,29 @@ const links = [
     accessTo: ['admin'],
   },
   {
+    name: 'Pricing',
+    href: '/pricing',
+    icon: HiOutlineTicket,
+    accessTo: ['admin', 'agent'],
+  },
+  {
+    name: 'Availability Rules',
+    href: '/availability-rules',
+    icon: HiOutlineTicket,
+    accessTo: ['admin', 'agent'],
+  },
+  {
     name: 'My Account',
     href: '/account',
     icon: HiOutlineUser,
     accessTo: ['admin', 'agent'],
   },
-  {
-    name: 'Log Out',
-    icon: HiArrowRightOnRectangle,
-    accessTo: ['admin', 'agent'],
-    action: 'logout', // 👈 new flag
-  },
+  // {
+  //   name: 'Log Out',
+  //   icon: HiArrowRightOnRectangle,
+  //   accessTo: ['admin', 'agent'],
+  //   action: 'logout', // 👈 new flag
+  // },
 ];
 
 function SidebarLink({ name, href, Icon, accessTo, action }) {
@@ -61,7 +71,7 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
       <button
         onClick={() => logout()}
         // disabled={!isAllowed}
-        className={`w-full flex items-center gap-2.5 font-light text-lg p-2.5 mb-1.25 rounded-sm duration-150 hover:bg-gray-100 hover:text-black cursor-pointer ${
+        className={`w-full flex items-center gap-2.5 font-light text-lg p-2.5 mb-1.25 duration-150 hover:bg-gray-100 hover:text-black cursor-pointer ${
           !isAllowed
             ? 'opacity-100 cursor-not-allowed'
             : 'bg-transparent text-white'
@@ -76,8 +86,10 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
   return (
     <NavLink
       to={href}
-      className={`flex items-center gap-2.5 font-light text-lg py-2 px-3 mb-1.25 rounded-sm duration-150 hover:bg-gray-100 hover:text-black ${
-        isActive ? 'bg-gray-100 text-black' : 'bg-transparent text-white'
+      className={`flex items-center gap-2.5 font-light text-lg py-1.75 px-3 mb-1.25 duration-150 ${
+        isActive
+          ? 'bg-accent-500 text-white'
+          : 'bg-transparent text-white hover:bg-gray-100 hover:text-black'
       } ${!isAllowed ? 'opacity-100' : ''}`}
     >
       {/* <Icon className="w-5 h-5" /> */}
@@ -88,7 +100,7 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
 
 export default function Navigation() {
   return (
-    <div className="h-full bg-primary-900 p-4 flex flex-col justify-center">
+    <div className="h-full bg-primary-900 flex flex-col justify-center">
       <div>
         {links.map((link, i) => (
           <SidebarLink

@@ -1,7 +1,7 @@
 import { baseURL } from '../utils/baseUrl';
 import { jwtCookie } from './jwt';
 
-const URL = `${baseURL}/api/vehicles`;
+const URL = `${baseURL}/api/pricing-rules`;
 
 async function checkError(res) {
   if (!res.ok) {
@@ -15,7 +15,7 @@ async function returnData(res) {
   return json?.data;
 }
 
-export async function getAllVehiclesApi() {
+export async function getAllPricingRulesApi() {
   const res = await fetch(URL, {
     headers: { Authorization: `Bearer ${jwtCookie}` },
   });
@@ -24,7 +24,7 @@ export async function getAllVehiclesApi() {
   return await returnData(res);
 }
 
-export async function getVehicleApi(id) {
+export async function getPricingRuleApi(id) {
   const res = await fetch(`${URL}/${id}`, {
     headers: { Authorization: `Bearer ${jwtCookie}` },
   });
@@ -33,20 +33,21 @@ export async function getVehicleApi(id) {
   return await returnData(res);
 }
 
-export async function createVehicleApi(formData) {
+export async function createPricingRuleApi(formData) {
   const res = await fetch(URL, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${jwtCookie}`,
     },
-    body: formData,
+    body: JSON.stringify(formData),
   });
 
   await checkError(res);
   return await returnData(res);
 }
 
-export async function updateVehicleApi({ id, data }) {
+export async function updatePricingRuleApi({ id, data }) {
   const res = await fetch(`${URL}/${id}`, {
     method: 'PATCH',
     headers: {
@@ -60,7 +61,7 @@ export async function updateVehicleApi({ id, data }) {
   return await returnData(res);
 }
 
-export async function deleteVehicleApi(id) {
+export async function deletePricingRuleApi(id) {
   const res = await fetch(`${URL}/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${jwtCookie}` },
@@ -70,7 +71,7 @@ export async function deleteVehicleApi(id) {
   return true;
 }
 
-export async function duplicateVehicleApi(id) {
+export async function duplicatePricingRuleApi(id) {
   const res = await fetch(`${URL}/${id}/duplicate`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${jwtCookie}` },

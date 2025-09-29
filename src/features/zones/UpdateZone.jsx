@@ -12,6 +12,7 @@ import PrimaryButton from '../../components/PrimaryButton';
 import DeleteButton from '../../components/DeleteButton';
 import { useParams } from 'react-router-dom';
 import { useDeleteZone } from './useDeleteZone';
+import { Helmet } from 'react-helmet-async';
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -161,6 +162,9 @@ export default function UpdateZone() {
 
   return (
     <>
+      <Helmet>
+        <title>{`${zoneName}`}</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },

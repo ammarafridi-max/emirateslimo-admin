@@ -12,7 +12,7 @@ export function useCreateVehicle() {
     onSuccess: () => {
       toast.success('Vehicle created successfully');
       queryClient.invalidateQueries({ queryKey: ['vehicles'] });
-      navigate('/vehicles');
+      // navigate('/vehicles');
     },
     onError: () => {
       toast.error('Vehicle could not be created');
