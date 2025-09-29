@@ -34,7 +34,7 @@ const links = [
     accessTo: ['admin'],
   },
   {
-    name: 'Pricing',
+    name: 'Pricing Rules',
     href: '/pricing',
     icon: HiOutlineTicket,
     accessTo: ['admin', 'agent'],
@@ -42,6 +42,12 @@ const links = [
   {
     name: 'Availability Rules',
     href: '/availability-rules',
+    icon: HiOutlineTicket,
+    accessTo: ['admin', 'agent'],
+  },
+  {
+    name: 'Users',
+    href: '/users',
     icon: HiOutlineTicket,
     accessTo: ['admin', 'agent'],
   },
