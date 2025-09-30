@@ -1,13 +1,24 @@
 import { Helmet } from 'react-helmet-async';
+import { useAvailabilityRules } from '../hooks/useAvailabilityRules';
+import { useDeleteAvailabilityRule } from '../hooks/useDeleteAvailabilityRule';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import PrimaryLink from '../../../components/PrimaryLink';
+import Table from '../../../components/Table';
+import Loading from '../../../components/Loading';
 
 export default function AvailabilityRules() {
+  const { availabilityRules, isLoadingAvailabilityRules } =
+    useAvailabilityRules();
+  const { deleteAvailabilityRule, isDeletingAvailabilityRule } =
+    useDeleteAvailabilityRule();
+
+  if (isLoadingAvailabilityRules) return <Loading />;
+
   return (
     <>
       <Helmet>
-        <title>Pricing</title>
+        <title>Availability Rules</title>
       </Helmet>
       <Breadcrumb
         paths={[
@@ -21,6 +32,50 @@ export default function AvailabilityRules() {
           Create Rule
         </PrimaryLink>
       </PageHeading>
+      <Table $columntemplate="2fr 3fr 3fr 3fr">
+        <Table.Head>
+          <Table.Heading>Rule Name</Table.Heading>
+          <Table.Heading>Pickup Zone(s)</Table.Heading>
+          <Table.Heading>Dropoff Zone(s)</Table.Heading>
+          <Table.Heading>Available Vehicles(s)</Table.Heading>
+        </Table.Head>
+        {availabilityRules?.map((rule) => (
+          <Table.Row key={rule?._id} href={`/availability-rules/${rule._id}`}>
+            <Table.Item>
+              <div>{rule?.name}</div>
+              <div className="flex gap-2">
+                <Table.DeleteLink
+                  onClick={() => deleteAvailabilityRule(rule?._id)}
+                />
+                {/* <Table.DuplicateLink
+                  onClick={() => duplicatePricingRule(rule?._id)}
+                /> */}
+              </div>
+            </Table.Item>
+            <Table.Item>
+              {rule.pickupZones.map((zone) => (
+                <Table.Link href={`/zones/${zone?._id}`}>
+                  {zone.name}
+                </Table.Link>
+              ))}
+            </Table.Item>
+            <Table.Item>
+              {rule.dropoffZones.map((zone) => (
+                <Table.Link href={`/zones/${zone?._id}`}>
+                  {zone.name}
+                </Table.Link>
+              ))}
+            </Table.Item>
+            <Table.Item>
+              {rule.vehicles.map((vehicle) => (
+                <Table.Link href={`/vehicles/${vehicle?._id}`}>
+                  {vehicle.brand} {vehicle.model}
+                </Table.Link>
+              ))}
+            </Table.Item>
+          </Table.Row>
+        ))}
+      </Table>
     </>
   );
 }

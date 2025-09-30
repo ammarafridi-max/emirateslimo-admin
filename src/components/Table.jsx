@@ -64,6 +64,14 @@ function Footer({ children }) {
   );
 }
 
+function Link({ href, children }) {
+  return (
+    <a href={href} className="hover:underline cursor-pointer">
+      {children}
+    </a>
+  );
+}
+
 function DeleteLink({ onClick }) {
   return (
     <button
@@ -102,6 +110,7 @@ Table.Heading = Heading;
 Table.Row = Row;
 Table.Item = Item;
 Table.Footer = Footer;
+Table.Link = Link;
 Table.DeleteLink = DeleteLink;
 Table.DuplicateLink = DuplicateLink;
 

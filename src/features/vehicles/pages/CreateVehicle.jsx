@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import VehicleForm from '../components/VehicleForm';
+import { Helmet } from 'react-helmet-async';
 
 export default function CreateVehicle() {
   const { createVehicle, isCreatingVehicle } = useCreateVehicle();
@@ -35,6 +36,9 @@ export default function CreateVehicle() {
 
   return (
     <div>
+      <Helmet>
+        <title>Create Vehicle | Vehicles</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },

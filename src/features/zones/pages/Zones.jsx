@@ -6,6 +6,7 @@ import PageHeading from '../../../components/PageHeading';
 import Table from '../../../components/Table';
 import Loading from '../../../components/Loading';
 import PrimaryLink from '../../../components/PrimaryLink';
+import { Helmet } from 'react-helmet-async';
 
 export default function Zones() {
   const { zones, isLoadingZones } = useZones();
@@ -15,6 +16,9 @@ export default function Zones() {
   if (isLoadingZones) return <Loading />;
   return (
     <>
+      <Helmet>
+        <title>Zones</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },

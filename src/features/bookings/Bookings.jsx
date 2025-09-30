@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Breadcrumb from '../../components/Breadcrumb';
 import PageHeading from '../../components/PageHeading';
 import Table from '../../components/Table';
@@ -5,6 +6,9 @@ import Table from '../../components/Table';
 export default function Bookings() {
   return (
     <>
+      <Helmet>
+        <title>Bookings</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },

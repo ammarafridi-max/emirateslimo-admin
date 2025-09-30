@@ -6,6 +6,7 @@ import { useUpdateVehicle } from '../hooks/useUpdateVehicle';
 import VehicleForm from '../components/VehicleForm';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
+import { Helmet } from 'react-helmet-async';
 
 export default function UpdateVehicle() {
   const { id } = useParams();
@@ -47,6 +48,9 @@ export default function UpdateVehicle() {
 
   return (
     <div>
+      <Helmet>
+        <title>{`${vehicle.brand} ${vehicle.model}`} | Vehicles</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },

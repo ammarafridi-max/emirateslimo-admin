@@ -6,6 +6,7 @@ import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import Input from '../../../components/FormElements/Input';
 import PrimaryButton from '../../../components/PrimaryButton';
+import { Helmet } from 'react-helmet-async';
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -29,7 +30,7 @@ export default function CreateZone() {
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v12',
       center: [55.296249, 25.276987],
-      zoom: 11,
+      zoom: 10,
     });
 
     const draw = new MapboxDraw({
@@ -124,6 +125,9 @@ export default function CreateZone() {
 
   return (
     <>
+      <Helmet>
+        <title>Create Zone</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
@@ -131,16 +135,9 @@ export default function CreateZone() {
           { label: 'Create Zone', href: '/zones/create' },
         ]}
       />
-      <PageHeading className="mb-5">Create Zones</PageHeading>
-      <form onSubmit={handleSubmit}>
-        <div className="bg-white p-7 rounded-xl shadow-lg">
-          <Input
-            placeholder="Enter Zone Name"
-            value={zoneName}
-            onChange={(e) => setZoneName(e.target.value)}
-          />
-        </div>
-        <div className="h-fit overflow-scroll flex flex-col gap-3 bg-white p-7 mt-5 rounded-xl shadow-lg">
+      <form onSubmit={handleSubmit} className="mt-5">
+        <ZoneName zoneName={zoneName} setZoneName={setZoneName} />
+        <div className="h-fit overflow-scroll flex flex-col gap-3 bg-white p-4 mt-5 rounded-xl shadow-lg">
           <div className="gap-5">
             <div
               ref={mapContainer}
@@ -149,43 +146,32 @@ export default function CreateZone() {
             />
 
             <div className="w-[100%] relative flex flex-col gap-3">
-              {/* <Label>Search</Label>
-              <SelectCustom
-                value={value}
-                setValue={setValue}
-                className="w-full"
-              >
-                <div className="min-h-fit max-h-[300px] overflow-scroll bg-white rounded-sm border-1 border-gray-200">
-                  {isLoadingLocations && (
-                    <>
-                      <LoadingLocation />
-                      <LoadingLocation />
-                      <LoadingLocation />
-                    </>
-                  )}
-                  {locations?.map((location, i) => (
-                    <div
-                      key={i}
-                      className="px-4 py-1.5 font-light text-[15px] cursor-pointer hover:bg-blue-100 duration-300"
-                      onClick={() => setValue(location?.name)}
-                    >
-                      {location?.name}
-                    </div>
-                  ))}
-                </div>
-              </SelectCustom> */}
-
               <PrimaryButton
                 type="submit"
                 className="mt-4"
+                size="small"
+                color="success"
                 disabled={isCreating}
               >
-                {isCreating ? 'Saving...' : 'Save Zone'}
+                {isCreating ? 'Creating...' : 'Create Zone'}
               </PrimaryButton>
             </div>
           </div>
         </div>
       </form>
     </>
+  );
+}
+
+function ZoneName({ zoneName, setZoneName }) {
+  return (
+    <div>
+      <p className="mb-2 text-2xl font-medium">Zone Name</p>
+      <Input
+        placeholder="Enter Zone Name"
+        value={zoneName}
+        onChange={(e) => setZoneName(e.target.value)}
+      />
+    </div>
   );
 }

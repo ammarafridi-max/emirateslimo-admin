@@ -16,7 +16,7 @@ export default function PricingList() {
   return (
     <>
       <Helmet>
-        <title>Pricing</title>
+        <title>Pricing Rules</title>
       </Helmet>
       <Breadcrumb
         paths={[
@@ -53,32 +53,23 @@ export default function PricingList() {
             </Table.Item>
             <Table.Item>
               {rule?.vehicles.map((vehicle) => (
-                <a
-                  className="hover:underline cursor-pointer"
-                  href={`/vehicles/${vehicle?._id}`}
-                >
+                <Table.Link href={`/vehicles/${vehicle?._id}`}>
                   {vehicle.brand} {vehicle.model}
-                </a>
+                </Table.Link>
               ))}
             </Table.Item>
             <Table.Item>
               {rule?.pickupZones.map((zone) => (
-                <a
-                  className="hover:underline cursor-pointer"
-                  href={`/zones/${zone?._id}`}
-                >
+                <Table.Link href={`/zones/${zone?._id}`}>
                   {zone.name}
-                </a>
+                </Table.Link>
               ))}
             </Table.Item>
             <Table.Item>
               {rule?.dropoffZones.map((zone) => (
-                <a
-                  className="hover:underline cursor-pointer"
-                  href={`/zones/${zone?._id}`}
-                >
+                <Table.Link href={`/zones/${zone?._id}`}>
                   {zone.name}
-                </a>
+                </Table.Link>
               ))}
             </Table.Item>
             <Table.Item>

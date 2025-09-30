@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useCreatePricingRule } from '../hooks/useCreatePricingRule';
 import PricingForm from '../components/PricingForm';
-import PageHeading from '../../../components/PageHeading';
 import Breadcrumb from '../../../components/Breadcrumb';
 
 export default function CreatePricing() {
@@ -16,7 +15,7 @@ export default function CreatePricing() {
   return (
     <>
       <Helmet>
-        <title>Create Pricing Rule</title>
+        <title>Create Pricing Rule | Pricing Rules</title>
       </Helmet>
       <Breadcrumb
         paths={[

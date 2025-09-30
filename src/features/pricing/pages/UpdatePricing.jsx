@@ -32,7 +32,7 @@ export default function UpdatePricing() {
   return (
     <>
       <Helmet>
-        <title>Create Pricing Rule</title>
+        <title>{`${pricingRule?.name}`}</title>
       </Helmet>
       <Breadcrumb
         paths={[

@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaPlus } from 'react-icons/fa6';
 import { useJwtData } from '../../../services/jwt';
 import { useUsers } from '../hooks/useUsers';
-import toast from 'react-hot-toast';
 import DangerPill from '../../../components/DangerPill';
 import SuccessPill from '../../../components/SuccessPill';
 import Table from '../../../components/Table';
@@ -17,12 +15,12 @@ export default function Users() {
   const navigate = useNavigate();
   const jwtData = useJwtData();
 
-  useEffect(() => {
-    if (jwtData?.role?.toLowerCase() !== 'admin') {
-      toast.error('You are not allowed to access this page');
-      navigate('/dummy-tickets');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (jwtData?.role?.toLowerCase() !== 'admin') {
+  //     toast.error('You are not allowed to access this page');
+  //     navigate('/bookings');
+  //   }
+  // }, [navigate]);
 
   if (isLoadingUsers) return <Loading />;
 
@@ -38,7 +36,7 @@ export default function Users() {
         ]}
       />
       <PageHeading>Users</PageHeading>
-      <Table columnTemplate="1fr_1fr_1.5fr_1fr_0.5fr">
+      <Table $columnTemplate="1fr 1fr 1.5fr 1fr 0.5fr">
         <Table.Head>
           <Table.Heading textAlign="left">Name</Table.Heading>
           <Table.Heading textAlign="left">Username</Table.Heading>

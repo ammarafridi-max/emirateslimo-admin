@@ -1,23 +1,33 @@
 export default function accentButton({
   children,
-  className,
+  className = '',
   size = 'medium',
+  color = 'primary',
   ...props
 }) {
-  let newClassName = className;
+  let newClassName =
+    'text-center no-underline font-outfit rounded-sm capitalize border border-solid cursor-pointer duration-300 disabled:opacity-60 disabled:cursor-auto ' +
+    className;
+
+  if (color === 'success') {
+    newClassName =
+      newClassName +
+      ' text-white bg-green-600 hover:bg-green-700 border-green-600 disabled:bg-green-500 disabled:hover:bg-green-700';
+  } else if (color === 'primary') {
+    newClassName =
+      newClassName +
+      ' text-white bg-accent-500 hover:bg-accent-600 border-accent-500 disabled:bg-accent-500 disabled:hover:bg-accent-500';
+  }
 
   if (size === 'large') {
     newClassName =
-      newClassName +
-      ` text-center text-white text-[15px] md:text-[18px] no-underline font-medium font-outfit py-3 px-5 rounded-sm capitalize bg-accent-500 hover:bg-accent-600 border border-solid border-accent-500 cursor-pointer duration-300  disabled:bg-accent-500 disabled:opacity-60 disabled:cursor-auto disabled:hover:bg-accent-500`;
+      newClassName + `  text-[15px] md:text-[18px] font-medium  py-3 px-5`;
   } else if (size === 'small') {
     newClassName =
-      newClassName +
-      ` text-center text-white text-[12px] md:text-[14px] no-underline font-light font-outfit py-2 px-4 rounded-sm capitalize bg-accent-500 hover:bg-accent-600 border border-solid border-accent-500 cursor-pointer duration-300  disabled:bg-accent-500 disabled:opacity-60 disabled:cursor-auto disabled:hover:bg-accent-500`;
+      newClassName + ` text-[12px] md:text-[14px] font-light py-2 px-4`;
   } else {
     newClassName =
-      newClassName +
-      ` text-center text-white text-[14px] md:text-[16px] no-underline font-regular font-outfit py-2.5 px-5 rounded-sm capitalize bg-accent-500 hover:bg-accent-600 border border-solid border-accent-500 cursor-pointer duration-300  disabled:bg-accent-500 disabled:opacity-60 disabled:cursor-auto disabled:hover:bg-accent-500`;
+      newClassName + ` text-[14px] md:text-[16px] font-regular py-2.5 px-5`;
   }
 
   return (

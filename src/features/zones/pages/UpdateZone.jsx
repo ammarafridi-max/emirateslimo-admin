@@ -187,16 +187,15 @@ export default function UpdateZone() {
               className="w-[100%] h-[600px] bg-gray-200 rounded-md"
             />
 
-            <div className="w-full relative flex flex-col gap-1">
+            <div className="w-full grid grid-cols-2 mt-3 gap-3">
               <PrimaryButton
-                className="mt-5"
+                color="success"
                 type="submit"
                 disabled={isUpdating || isDeleting}
               >
                 {isUpdating ? 'Updating...' : 'Update Zone'}
               </PrimaryButton>
               <DeleteButton
-                className="mt-1"
                 type="button"
                 onClick={() => deleteZone(zoneId)}
                 disabled={isUpdating || isDeleting}

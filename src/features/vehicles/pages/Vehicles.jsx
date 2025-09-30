@@ -5,6 +5,7 @@ import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import Table from '../../../components/Table';
 import PrimaryLink from '../../../components/PrimaryLink';
+import { Helmet } from 'react-helmet-async';
 
 export default function Vehicles() {
   const { vehicles } = useVehicles();
@@ -13,6 +14,9 @@ export default function Vehicles() {
 
   return (
     <>
+      <Helmet>
+        <title>Vehicles</title>
+      </Helmet>
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
