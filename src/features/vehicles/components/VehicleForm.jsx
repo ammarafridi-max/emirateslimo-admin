@@ -3,8 +3,16 @@ import Input from '../../../components/FormElements/Input';
 import Label from '../../../components/FormElements/Label';
 import Select from '../../../components/FormElements/Select';
 import PrimaryButton from '../../../components/PrimaryButton';
+import Textarea from '../../../components/FormElements/Textarea';
+import Image from '../../../components/Image';
+import { useDeleteImage } from '../hooks/useDeleteImage';
 
-export default function VehicleForm({ register, onSubmit, isLoading }) {
+export default function VehicleForm({
+  register,
+  onSubmit,
+  isLoading,
+  vehicle,
+}) {
   const [activeTab, setActiveTab] = useState('vehicleInformation');
 
   return (
@@ -19,6 +27,10 @@ export default function VehicleForm({ register, onSubmit, isLoading }) {
             {
               name: 'Vehicle Pricing',
               component: 'vehiclePricing',
+            },
+            {
+              name: 'Images',
+              component: 'images',
             },
           ].map((opt, i) => (
             <button
@@ -36,6 +48,9 @@ export default function VehicleForm({ register, onSubmit, isLoading }) {
         )}
         {activeTab === 'vehiclePricing' && (
           <VehiclePricing register={register} />
+        )}
+        {activeTab === 'images' && (
+          <Images register={register} vehicle={vehicle} />
         )}
       </div>
       <Actions isLoading={isLoading} />
@@ -59,12 +74,8 @@ function VehicleInformation({ register }) {
         <Input type="number" {...register('year')} />
       </div>
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Featured Image</Label>
-        <Input
-          type="file"
-          accept=".png,.jpeg,.jpg,.webp"
-          {...register('featuredImage')}
-        />
+        <Label>Description</Label>
+        <Textarea rows={4} {...register('description')} />
       </div>
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
         <Label>Passengers</Label>
@@ -78,6 +89,16 @@ function VehicleInformation({ register }) {
         <Label>Type</Label>
         <Select {...register('type')}>
           {['Sedan', 'Crossover', 'SUV', 'Van'].map((opt, i) => (
+            <option value={opt} key={i}>
+              {opt}
+            </option>
+          ))}
+        </Select>
+      </div>
+      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
+        <Label>Fuel</Label>
+        <Select {...register('fuel')}>
+          {['Petrol', 'Diesel', 'Electric', 'Hybrid'].map((opt, i) => (
             <option value={opt} key={i}>
               {opt}
             </option>
@@ -112,6 +133,72 @@ function VehiclePricing({ register }) {
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
         <Label>Price Per KM</Label>
         <Input type="number" {...register('pricePerKm')} />
+      </div>
+    </div>
+  );
+}
+
+function Images({ register, vehicle }) {
+  const { deleteImage, isDeleting } = useDeleteImage();
+
+  return (
+    <div className="flex flex-col gap-2">
+      {vehicle?.featuredImage || vehicle?.images ? (
+        <div className="grid grid-cols-4 gap-4 mb-5">
+          {vehicle?.featuredImage && (
+            <Image
+              featured={true}
+              src={vehicle?.featuredImage}
+              className="object-cover"
+              isDeleting={isDeleting}
+              onDelete={() => {
+                deleteImage({
+                  id: vehicle._id,
+                  imageUrl: vehicle.featuredImage,
+                });
+              }}
+            />
+          )}
+          {vehicle?.images &&
+            vehicle?.images.map((image, i) => (
+              <Image
+                key={i}
+                src={image}
+                className="object-contain"
+                isDeleting={isDeleting}
+                onDelete={() => {
+                  deleteImage({
+                    id: vehicle._id,
+                    imageUrl: image,
+                  });
+                }}
+              />
+            ))}
+        </div>
+      ) : (
+        ''
+      )}
+
+      {!vehicle?.featuredImage && (
+        <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
+          <Label>Featured Image</Label>
+          <Input
+            type="file"
+            {...register('featuredImage')}
+            multiple={false}
+            accept=".png,.jpeg,.jpg,.webp"
+          />
+        </div>
+      )}
+
+      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
+        <Label>Images</Label>
+        <Input
+          type="file"
+          {...register('images')}
+          multiple
+          accept=".png,.jpeg,.jpg,.webp"
+        />
       </div>
     </div>
   );

@@ -1,21 +1,24 @@
+// useDuplicateAvailabilityRule.js
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { duplicatePricingRuleApi } from '../services/pricingRuleApi';
+import { duplicateAvailabilityRuleApi } from '../services/availabilityRulesApi';
 import toast from 'react-hot-toast';
 
-export function useDuplicatePricingRule() {
+export function useDuplicateAvailabilityRule() {
   const queryClient = useQueryClient();
 
-  const { mutate: duplicatePricingRule, isLoading: isDuplicatingPricingRule } =
-    useMutation({
-      mutationFn: duplicatePricingRuleApi,
-      onSuccess: () => {
-        toast.success('Pricing rule duplicated successfully');
-        queryClient.invalidateQueries({ queryKey: ['pricing-rule'] });
-      },
-      onError: () => {
-        toast.error('Pricing rule could not be duplicated');
-      },
-    });
+  const {
+    mutate: duplicateAvailabilityRule,
+    isLoading: isDuplicatingAvailabilityRule,
+  } = useMutation({
+    mutationFn: duplicateAvailabilityRuleApi,
+    onSuccess: () => {
+      toast.success('Availability rule duplicated successfully');
+      queryClient.invalidateQueries({ queryKey: ['availability-rules'] });
+    },
+    onError: () => {
+      toast.error('Availability rule could not be duplicated');
+    },
+  });
 
-  return { duplicatePricingRule, isDuplicatingPricingRule };
+  return { duplicateAvailabilityRule, isDuplicatingAvailabilityRule };
 }

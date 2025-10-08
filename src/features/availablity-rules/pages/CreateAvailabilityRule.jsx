@@ -10,7 +10,23 @@ export default function CreateAvailabilityRule() {
     useCreateAvailabilityRule();
 
   function onSubmit(data) {
-    createAvailabilityRule(data);
+    const transformedVehicles = Object.entries(data.vehicles || {}).map(
+      ([vehicleId, available]) => ({
+        vehicleId,
+        available,
+      })
+    );
+
+    const finalData = {
+      name: data.name,
+      pickupZones: data.pickupZones,
+      dropoffZones: data.dropoffZones,
+      vehicles: transformedVehicles,
+    };
+
+    console.log(finalData);
+
+    createAvailabilityRule(finalData);
   }
 
   return (

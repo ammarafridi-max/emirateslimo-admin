@@ -6,30 +6,30 @@ import Label from '../../../components/FormElements/Label';
 import PrimaryButton from '../../../components/PrimaryButton';
 
 export default function AvailabilityForm({ onSubmit, register, isLoading }) {
-  const [activeTab, setActiveTab] = useState('vehiclesZones');
+  const [activeTab, setActiveTab] = useState('zones');
 
   return (
     <form onSubmit={onSubmit} className="mt-5">
       <AvailabilityRuleName register={register} />
       <div className="min-h-[450px] overflow-scroll flex flex-col bg-white p-7 mt-5 rounded-xl shadow-lg">
         <div className="flex gap-2 text-sm mb-5">
-          {[
-            {
-              name: 'Vehicles & Zones',
-              component: 'vehiclesZones',
-            },
-          ].map((opt, i) => (
+          {['zones', 'vehicles'].map((item) => (
             <button
+              key={item}
               type="button"
-              className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${opt.component === activeTab ? 'bg-primary-900 text-primary-50' : 'bg-primary-200 text-primary-900 hover:bg-primary-300'}`}
-              key={i}
-              onClick={() => setActiveTab(opt.component)}
+              className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${
+                activeTab === item
+                  ? 'bg-primary-900 text-primary-50'
+                  : 'bg-primary-200 text-primary-900 hover:bg-primary-300'
+              }`}
+              onClick={() => setActiveTab(item)}
             >
-              {opt.name}
+              {item.charAt(0).toUpperCase() + item.slice(1)}
             </button>
           ))}
         </div>
-        {activeTab === 'vehiclesZones' && <VehiclesZones register={register} />}
+        {activeTab === 'vehicles' && <Vehicles register={register} />}
+        {activeTab === 'zones' && <Zones register={register} />}
       </div>
       <Actions isLoading={isLoading} />
     </form>
@@ -45,15 +45,15 @@ function AvailabilityRuleName({ register }) {
   );
 }
 
-function VehiclesZones({ register }) {
+function Zones({ register }) {
   const { zones } = useZones();
-  const { vehicles } = useVehicles();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
+      {/* Pickup Zones */}
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Pick up Zone</Label>
-        <div className="w-full h-[200px] bg-white py-2 px-5 rounded-sm border-1 border-gray-300 outline-0 overflow-y-scroll">
+        <Label>Pick up Zones</Label>
+        <div className="w-full h-[200px] bg-white p-2 rounded-sm border border-gray-300 overflow-y-scroll">
           <select
             multiple
             className="w-full h-full outline-0"
@@ -61,19 +61,21 @@ function VehiclesZones({ register }) {
           >
             {zones?.map((zone) => (
               <option
-                key={zone?._id}
-                value={zone?._id}
-                className=" py-1 px-3 cursor-pointer"
+                className="px-3 py-2 cursor-pointer hover:bg-gray-200"
+                key={zone._id}
+                value={zone._id}
               >
-                {zone?.name}
+                {zone.name}
               </option>
             ))}
           </select>
         </div>
       </div>
+
+      {/* Dropoff Zones */}
       <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Drop off Zone</Label>
-        <div className="w-full h-[200px] bg-white py-2 px-5 rounded-sm border-1 border-gray-300 outline-0 overflow-y-scroll">
+        <Label>Drop off Zones</Label>
+        <div className="w-full h-[200px] bg-white p-2 rounded-sm border border-gray-300 overflow-y-scroll">
           <select
             multiple
             className="w-full h-full outline-0"
@@ -81,36 +83,42 @@ function VehiclesZones({ register }) {
           >
             {zones?.map((zone) => (
               <option
-                key={zone?._id}
-                value={zone?._id}
-                className=" py-1 px-3 cursor-pointer"
+                className="px-3 py-2 cursor-pointer hover:bg-gray-200"
+                key={zone._id}
+                value={zone._id}
               >
-                {zone?.name}
+                {zone.name}
               </option>
             ))}
           </select>
         </div>
       </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Available Vehicles</Label>
-        <div className="w-full h-[200px] bg-white py-2 px-5 rounded-sm border-1 border-gray-300 outline-0 overflow-y-scroll">
-          <select
-            multiple
-            className="w-full h-full outline-0"
-            {...register('vehicles')}
-          >
-            {vehicles?.map((vehicle) => (
-              <option
-                key={vehicle?._id}
-                value={vehicle?._id}
-                className="py-1 px-3 cursor-pointer"
-              >
-                {vehicle?.brand} {vehicle?.model}
-              </option>
-            ))}
-          </select>
+    </div>
+  );
+}
+
+function Vehicles({ register }) {
+  const { vehicles } = useVehicles();
+  return (
+    <div className="flex flex-col gap-1 mt-4 divide-y divide-gray-300">
+      {vehicles?.map((veh) => (
+        <div
+          key={veh._id}
+          className="grid grid-cols-[3fr_6fr_3fr] items-center p-3"
+        >
+          <Label className="text-sm text-gray-700">
+            {veh.brand} {veh.model}
+          </Label>
+          <div>
+            <input
+              type="checkbox"
+              {...register(`vehicles.${veh._id}`)}
+              className="cursor-pointer"
+            />
+            <span className="ml-2 text-sm">Available</span>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
@@ -124,7 +132,7 @@ function Actions({ isLoading }) {
         disabled={isLoading}
         className="w-full"
       >
-        {isLoading ? 'Creating...' : 'Create Rule'}
+        {isLoading ? 'Saving...' : 'Save Rule'}
       </PrimaryButton>
     </div>
   );

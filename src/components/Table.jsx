@@ -66,7 +66,7 @@ function Footer({ children }) {
 
 function Link({ href, children }) {
   return (
-    <a href={href} className="hover:underline cursor-pointer">
+    <a href={href} className="w-fit hover:underline cursor-pointer">
       {children}
     </a>
   );

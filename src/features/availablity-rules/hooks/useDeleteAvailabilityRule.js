@@ -17,7 +17,7 @@ export function useDeleteAvailabilityRule() {
       return deleteAvailabilityRuleApi(id);
     },
     onSuccess: () => {
-      toast.success('availability rule deleted successfully');
+      toast.success('Availability rule deleted successfully');
       navigate('/availability-rules');
     },
     onError: () => {

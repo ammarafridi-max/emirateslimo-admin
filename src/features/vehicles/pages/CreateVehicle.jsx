@@ -1,9 +1,9 @@
+import { Helmet } from 'react-helmet-async';
 import { useCreateVehicle } from '../hooks/useCreateVehicle';
 import { useForm } from 'react-hook-form';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import VehicleForm from '../components/VehicleForm';
-import { Helmet } from 'react-helmet-async';
 
 export default function CreateVehicle() {
   const { createVehicle, isCreatingVehicle } = useCreateVehicle();
@@ -12,16 +12,26 @@ export default function CreateVehicle() {
   async function onSubmit(data) {
     const formData = new FormData();
 
-    formData.append('image', data.featuredImage[0]);
-    formData.append('brand', data.brand);
-    formData.append('model', data.model);
-    formData.append('year', data.year);
-    formData.append('passengers', data.passengers);
-    formData.append('luggage', data.luggage);
-    formData.append('type', data.type);
-    formData.append('class', data.class);
+    if (data?.featuredImage[0]) {
+      formData.append('featuredImage', data?.featuredImage[0]);
+    }
 
-    // structured pricing
+    if (data?.images?.length > 0) {
+      for (const img of data.images) {
+        formData.append('images', img);
+      }
+    }
+
+    formData.append('brand', data?.brand);
+    formData.append('model', data?.model);
+    formData.append('year', data?.year);
+    formData.append('passengers', data?.passengers);
+    formData.append('luggage', data?.luggage);
+    formData.append('type', data?.type);
+    formData.append('class', data?.class);
+    formData.append('description', data?.description);
+    formData.append('fuel', data?.fuel);
+
     formData.append(
       'pricing',
       JSON.stringify({

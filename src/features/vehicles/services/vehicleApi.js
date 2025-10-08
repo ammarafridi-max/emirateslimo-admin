@@ -11,6 +11,7 @@ async function checkError(res) {
 }
 
 async function returnData(res) {
+  if (res.status === 204) return null;
   const json = await res.json();
   return json?.data;
 }
@@ -46,14 +47,13 @@ export async function createVehicleApi(formData) {
   return await returnData(res);
 }
 
-export async function updateVehicleApi({ id, data }) {
+export async function updateVehicleApi({ id, formData }) {
   const res = await fetch(`${URL}/${id}`, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${jwtCookie}`,
     },
-    body: JSON.stringify(data),
+    body: formData,
   });
 
   await checkError(res);
@@ -78,4 +78,18 @@ export async function duplicateVehicleApi(id) {
 
   await checkError(res);
   return await returnData(res);
+}
+
+export async function deleteVehicleImageApi(id, imageUrl) {
+  const res = await fetch(`${URL}/${id}/images`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwtCookie}`,
+    },
+    body: JSON.stringify({ imageUrl }),
+  });
+
+  await checkError(res);
+  return true;
 }

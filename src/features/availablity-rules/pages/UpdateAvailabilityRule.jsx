@@ -14,34 +14,58 @@ export default function UpdateAvailabilityRule() {
   const { id } = useParams();
   const { zones } = useZones();
   const { vehicles } = useVehicles();
+
   const { availabilityRule, isLoadingAvailabilityRule } =
     useAvailabilityRule(id);
   const { updateAvailabilityRule, isUpdatingAvailabilityRule } =
     useUpdateAvailabilityRule();
+
   const { register, handleSubmit, reset } = useForm();
 
+  // ✅ Transform form data before sending to backend
   function onSubmit(data) {
-    updateAvailabilityRule({ id, data });
+    const transformedVehicles = Object.entries(data.vehicles || {}).map(
+      ([vehicleId, available]) => ({
+        vehicleId,
+        available,
+      })
+    );
+
+    const finalData = {
+      name: data.name,
+      pickupZones: data.pickupZones,
+      dropoffZones: data.dropoffZones,
+      vehicles: transformedVehicles,
+    };
+
+    updateAvailabilityRule({ id, data: finalData });
   }
 
+  // ✅ Set default values when rule loads
   useEffect(() => {
-    if (availabilityRule && id && zones && vehicles) {
+    if (availabilityRule && zones?.length && vehicles?.length) {
+      const vehicleMap = {};
+      availabilityRule.vehicles.forEach((v) => {
+        vehicleMap[v.vehicleId?._id || v.vehicleId] = v.available;
+      });
+
       reset({
-        name: availabilityRule?.name,
-        pickupZones: availabilityRule?.pickupZones?.map((zone) => zone._id),
-        dropoffZones: availabilityRule.dropoffZones?.map((zone) => zone._id),
-        vehicles: availabilityRule?.vehicles?.map((vehicle) => vehicle._id),
+        name: availabilityRule.name,
+        pickupZones: availabilityRule.pickupZones?.map((z) => z._id),
+        dropoffZones: availabilityRule.dropoffZones?.map((z) => z._id),
+        vehicles: vehicleMap,
       });
     }
-  }, [id, availabilityRule]);
+  }, [id, availabilityRule, zones, vehicles, reset]);
 
   if (isLoadingAvailabilityRule) return <Loading />;
 
   return (
     <>
       <Helmet>
-        <title>{`${availabilityRule?.name}`} | Availability Rules</title>
+        <title>{availabilityRule?.name} | Availability Rules</title>
       </Helmet>
+
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
@@ -52,6 +76,7 @@ export default function UpdateAvailabilityRule() {
           },
         ]}
       />
+
       <AvailabilityForm
         onSubmit={handleSubmit(onSubmit)}
         register={register}

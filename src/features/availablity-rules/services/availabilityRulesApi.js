@@ -75,3 +75,13 @@ export async function deleteAvailabilityRuleApi(id) {
   await checkError(res);
   return true;
 }
+
+export async function duplicateAvailabilityRuleApi(id) {
+  const res = await fetch(`${URL}/${id}/duplicate`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${jwtCookie}` },
+  });
+
+  await checkError(res);
+  return await returnData(res);
+}

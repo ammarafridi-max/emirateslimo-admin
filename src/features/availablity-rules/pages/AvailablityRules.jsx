@@ -13,6 +13,8 @@ export default function AvailabilityRules() {
   const { deleteAvailabilityRule, isDeletingAvailabilityRule } =
     useDeleteAvailabilityRule();
 
+  console.log(availabilityRules);
+
   if (isLoadingAvailabilityRules) return <Loading />;
 
   return (
@@ -67,11 +69,13 @@ export default function AvailabilityRules() {
               ))}
             </Table.Item>
             <Table.Item>
-              {rule.vehicles.map((vehicle) => (
-                <Table.Link href={`/vehicles/${vehicle?._id}`}>
-                  {vehicle.brand} {vehicle.model}
-                </Table.Link>
-              ))}
+              {rule.vehicles
+                .filter((veh) => veh?.available)
+                .map((veh) => (
+                  <Table.Link href={`/vehicles/${veh?.vehicleId?._id}`}>
+                    {veh?.vehicleId?.brand} {veh?.vehicleId?.model}
+                  </Table.Link>
+                ))}
             </Table.Item>
           </Table.Row>
         ))}

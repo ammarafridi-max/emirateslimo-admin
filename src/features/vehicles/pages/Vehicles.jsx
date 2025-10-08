@@ -38,8 +38,8 @@ export default function Vehicles() {
           <Table.Heading textAlign="center">Class</Table.Heading>
           <Table.Heading>Pricing</Table.Heading>
         </Table.Head>
-        {vehicles?.map((vehicle) => (
-          <Table.Row href={`/vehicles/${vehicle._id}`}>
+        {vehicles?.map((vehicle, i) => (
+          <Table.Row key={i} href={`/vehicles/${vehicle._id}`}>
             <Table.Item>
               <div>
                 {vehicle?.brand} {vehicle?.model}

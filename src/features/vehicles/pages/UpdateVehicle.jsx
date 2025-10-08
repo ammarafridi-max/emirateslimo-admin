@@ -15,15 +15,18 @@ export default function UpdateVehicle() {
 
   const { register, handleSubmit, reset } = useForm();
 
+  // ✅ Populate form when vehicle data loads
   useEffect(() => {
     if (vehicle) {
       reset({
         brand: vehicle.brand,
         model: vehicle.model,
         year: vehicle.year,
+        description: vehicle.description,
         passengers: vehicle.passengers,
         luggage: vehicle.luggage,
         type: vehicle.type,
+        fuel: vehicle.fuel,
         class: vehicle.class,
         initialPrice: vehicle.pricing?.initialPrice,
         pricePerHour: vehicle.pricing?.pricePerHour,
@@ -32,16 +35,43 @@ export default function UpdateVehicle() {
     }
   }, [vehicle, reset]);
 
+  // ✅ Submit handler
   function onSubmit(data) {
-    const updateData = {
-      ...data,
-      pricing: {
+    const formData = new FormData();
+
+    // Text fields
+    formData.append('brand', data.brand);
+    formData.append('model', data.model);
+    formData.append('year', data.year);
+    formData.append('description', data.description || '');
+    formData.append('passengers', data.passengers);
+    formData.append('luggage', data.luggage);
+    formData.append('type', data.type);
+    formData.append('fuel', data.fuel);
+    formData.append('class', data.class);
+
+    // Pricing
+    formData.append(
+      'pricing',
+      JSON.stringify({
         initialPrice: Number(data.initialPrice),
         pricePerHour: Number(data.pricePerHour),
         pricePerKm: Number(data.pricePerKm),
-      },
-    };
-    updateVehicle({ id, data: updateData });
+      })
+    );
+
+    // Optional image uploads (user may not change these)
+    if (data?.featuredImage?.[0]) {
+      formData.append('featuredImage', data.featuredImage[0]);
+    }
+    if (data?.images?.length > 0) {
+      for (const img of data.images) {
+        formData.append('images', img);
+      }
+    }
+
+    // Trigger mutation
+    updateVehicle({ id, formData });
   }
 
   if (isLoading) return <p>Loading vehicle...</p>;
@@ -49,8 +79,9 @@ export default function UpdateVehicle() {
   return (
     <div>
       <Helmet>
-        <title>{`${vehicle.brand} ${vehicle.model}`} | Vehicles</title>
+        <title>{`${vehicle?.brand || ''} ${vehicle?.model || ''} | Vehicles`}</title>
       </Helmet>
+
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
@@ -58,8 +89,11 @@ export default function UpdateVehicle() {
           { label: 'Update Vehicle', href: `/vehicles/${id}/edit` },
         ]}
       />
+
       <PageHeading>Update Vehicle</PageHeading>
+
       <VehicleForm
+        vehicle={vehicle}
         register={register}
         onSubmit={handleSubmit(onSubmit)}
         isLoading={isUpdatingVehicle}
