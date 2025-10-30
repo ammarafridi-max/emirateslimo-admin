@@ -11,10 +11,11 @@ export function useDuplicateAvailabilityRule() {
     isLoading: isDuplicatingAvailabilityRule,
   } = useMutation({
     mutationFn: duplicateAvailabilityRuleApi,
-    onSuccess: () => {
-      toast.success('Availability rule duplicated successfully');
+    onSuccess: (data) => {
+      toast.success(`Rule "${data?.name}" duplicated successfully`);
       queryClient.invalidateQueries({ queryKey: ['availability-rules'] });
     },
+
     onError: () => {
       toast.error('Availability rule could not be duplicated');
     },

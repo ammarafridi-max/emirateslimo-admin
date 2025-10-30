@@ -72,8 +72,8 @@ export default function AvailabilityRules() {
               {rule.vehicles
                 .filter((veh) => veh?.available)
                 .map((veh) => (
-                  <Table.Link href={`/vehicles/${veh?.vehicleId?._id}`}>
-                    {veh?.vehicleId?.brand} {veh?.vehicleId?.model}
+                  <Table.Link href={`/vehicles/${veh?._id}`}>
+                    {veh?.brand} {veh?.model}
                   </Table.Link>
                 ))}
             </Table.Item>

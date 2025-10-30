@@ -1,12 +1,8 @@
 import { baseURL } from '../../../utils/baseUrl';
+import { apiFetch, apiUpload } from '../../../utils/apiClient';
 
 export async function getZonesApi() {
-  const res = await fetch(`${baseURL}/api/zones`);
-
-  if (!res.ok) throw new Error('Could not fetch zones');
-
-  const data = await res.json();
-  return data?.data?.zones;
+  return apiFetch('/api/zones');
 }
 
 export async function createZoneApi(zoneData) {
@@ -45,16 +41,9 @@ export async function deleteZoneApi(id) {
   return true;
 }
 
-export async function duplicateZoneApi(zone) {
-  const { _id, createdAt, updatedAt, ...rest } = zone;
-
-  const res = await fetch(`${baseURL}/api/zones`, {
+export async function duplicateZoneApi(id) {
+  const res = await fetch(`${baseURL}/api/zones/${id}/duplicate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      ...rest,
-      name: `${rest.name} Copy`,
-    }),
   });
 
   if (!res.ok) throw new Error('Could not duplicate zone');

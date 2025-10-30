@@ -1,95 +1,33 @@
-import { baseURL } from '../../../utils/baseUrl';
-import { jwtCookie } from '../../../services/jwt';
+import { apiFetch, apiUpload } from '../../../utils/apiClient';
 
-const URL = `${baseURL}/api/vehicles`;
-
-async function checkError(res) {
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || 'Something went wrong');
-  }
+export function getAllVehiclesApi() {
+  return apiFetch('/api/vehicles');
 }
 
-async function returnData(res) {
-  if (res.status === 204) return null;
-  const json = await res.json();
-  return json?.data;
+export function getVehicleApi(id) {
+  return apiFetch(`/api/vehicles/${id}`);
 }
 
-export async function getAllVehiclesApi() {
-  const res = await fetch(URL, {
-    headers: { Authorization: `Bearer ${jwtCookie}` },
-  });
-
-  await checkError(res);
-  return await returnData(res);
+export function createVehicleApi(formData) {
+  return apiUpload('/api/vehicles', formData, 'POST');
 }
 
-export async function getVehicleApi(id) {
-  const res = await fetch(`${URL}/${id}`, {
-    headers: { Authorization: `Bearer ${jwtCookie}` },
-  });
-
-  await checkError(res);
-  return await returnData(res);
+export function updateVehicleApi({ id, formData }) {
+  return apiUpload(`/api/vehicles/${id}`, formData, 'PATCH');
 }
 
-export async function createVehicleApi(formData) {
-  const res = await fetch(URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${jwtCookie}`,
-    },
-    body: formData,
-  });
-
-  await checkError(res);
-  return await returnData(res);
+export function deleteVehicleApi(id) {
+  return apiFetch(`/api/vehicles/${id}`, { method: 'DELETE' });
 }
 
-export async function updateVehicleApi({ id, formData }) {
-  const res = await fetch(`${URL}/${id}`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bearer ${jwtCookie}`,
-    },
-    body: formData,
-  });
-
-  await checkError(res);
-  return await returnData(res);
+export function duplicateVehicleApi(id) {
+  return apiFetch(`/api/vehicles/${id}/duplicate`, { method: 'POST' });
 }
 
-export async function deleteVehicleApi(id) {
-  const res = await fetch(`${URL}/${id}`, {
+export function deleteVehicleImageApi(id, imageUrl) {
+  return apiFetch(`/api/vehicles/${id}/images`, {
     method: 'DELETE',
-    headers: { Authorization: `Bearer ${jwtCookie}` },
-  });
-
-  await checkError(res);
-  return true;
-}
-
-export async function duplicateVehicleApi(id) {
-  const res = await fetch(`${URL}/${id}/duplicate`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${jwtCookie}` },
-  });
-
-  await checkError(res);
-  return await returnData(res);
-}
-
-export async function deleteVehicleImageApi(id, imageUrl) {
-  const res = await fetch(`${URL}/${id}/images`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwtCookie}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ imageUrl }),
   });
-
-  await checkError(res);
-  return true;
 }

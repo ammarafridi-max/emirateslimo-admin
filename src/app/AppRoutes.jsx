@@ -34,7 +34,7 @@ import CreateAvailabilityRule from '../features/availablity-rules/pages/CreateAv
 import UpdateAvailabilityRule from '../features/availablity-rules/pages/UpdateAvailabilityRule';
 
 // Bookings
-import Bookings from '../features/bookings/Bookings';
+import Bookings from '../features/bookings/pages/Bookings';
 
 import MyAccount from '../features/account/MyAccount';
 
@@ -42,6 +42,7 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
         {/* <Route element={<PrivateRoutes />}> */}
         <Route element={<AppLayout />}>
@@ -70,7 +71,6 @@ export default function AppRoutes() {
           <Route path="users" element={<Users />} />
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/:username" element={<UpdateUser />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
         {/* </Route> */}
       </Routes>

@@ -1,11 +1,10 @@
-import { useContext } from 'react';
-import { createContext } from 'react';
+import { useContext, createContext } from 'react';
 
 const TableContext = createContext();
 
 function Table({ children, $columntemplate }) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md shadow-gray-300">
+    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
       <TableContext.Provider value={{ $columntemplate }}>
         {children}
       </TableContext.Provider>
@@ -17,7 +16,7 @@ function Head({ children }) {
   const { $columntemplate } = useContext(TableContext);
   return (
     <div
-      className={`grid bg-primary-900 text-white gap-2.5 py-2.5 px-5 mb-2.5 items-center`}
+      className="grid bg-primary-900 text-white text-sm font-medium py-3 px-6 items-center"
       style={{ gridTemplateColumns: $columntemplate.replace(/_/g, ' ') }}
     >
       {children}
@@ -26,30 +25,45 @@ function Head({ children }) {
 }
 
 function Heading({ children, textAlign = 'left' }) {
+  const alignClass =
+    textAlign === 'center'
+      ? 'text-center'
+      : textAlign === 'right'
+        ? 'text-right'
+        : 'text-left';
   return (
-    <p className={`font-light text-[15px] text-${textAlign}`}>{children}</p>
+    <p className={`tracking-wide ${alignClass} text-[14px] uppercase`}>
+      {children}
+    </p>
   );
 }
 
 function Row({ children, onClick, href }) {
   const { $columntemplate } = useContext(TableContext);
+  const Component = href ? 'a' : 'div';
+
   return (
-    <a
-      className={`text-black grid gap-2.5 py-1.5 px-5 mb-1 rounded-sm items-center duration-200 cursor-pointer hover:bg-primary-100`}
-      style={{ gridTemplateColumns: $columntemplate.replace(/_/g, ' ') }}
+    <Component
       href={href}
       onClick={onClick}
-      $columntemplate={$columntemplate}
+      className="grid items-center py-3 px-6 gap-3 text-[15px] text-gray-800 border-b border-gray-100 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+      style={{ gridTemplateColumns: $columntemplate.replace(/_/g, ' ') }}
     >
       {children}
-    </a>
+    </Component>
   );
 }
 
 function Item({ children, textAlign = 'left', textTransform = 'none' }) {
+  const alignClass =
+    textAlign === 'center'
+      ? 'text-center'
+      : textAlign === 'right'
+        ? 'text-right'
+        : 'text-left';
   return (
     <p
-      className={`font-light text-[15px] text-${textAlign} ${textTransform} flex flex-col`}
+      className={`text-[15px] text-gray-700 ${alignClass} ${textTransform} flex flex-col`}
     >
       {children}
     </p>
@@ -58,7 +72,7 @@ function Item({ children, textAlign = 'left', textTransform = 'none' }) {
 
 function Footer({ children }) {
   return (
-    <div className="bg-gray-800 text-white text-[14px] py-2.5 px-5">
+    <div className="bg-gray-50 text-gray-600 text-[14px] py-3 px-6 border-t border-gray-200">
       {children}
     </div>
   );
@@ -66,7 +80,10 @@ function Footer({ children }) {
 
 function Link({ href, children }) {
   return (
-    <a href={href} className="w-fit hover:underline cursor-pointer">
+    <a
+      href={href}
+      className="text-black hover:underline font-extralight cursor-pointer transition-colors"
+    >
       {children}
     </a>
   );
@@ -75,13 +92,13 @@ function Link({ href, children }) {
 function DeleteLink({ onClick }) {
   return (
     <button
-      className="text-red-700 cursor-pointer hover:underline"
-      type="button"
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
         onClick();
       }}
+      type="button"
+      className="text-red-600 hover:underline font-medium transition-colors"
     >
       Delete
     </button>
@@ -91,20 +108,20 @@ function DeleteLink({ onClick }) {
 function DuplicateLink({ onClick }) {
   return (
     <button
-      className="text-blue-700 cursor-pointer hover:underline"
-      type="button"
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
         onClick();
       }}
+      type="button"
+      className="text-blue-600 hover:underline font-medium transition-colors"
     >
       Duplicate
     </button>
   );
 }
 
-Table = Table;
+// Attach subcomponents
 Table.Head = Head;
 Table.Heading = Heading;
 Table.Row = Row;

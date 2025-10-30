@@ -20,16 +20,18 @@ export default function UpdateAvailabilityRule() {
   const { updateAvailabilityRule, isUpdatingAvailabilityRule } =
     useUpdateAvailabilityRule();
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control } = useForm();
 
-  // ✅ Transform form data before sending to backend
   function onSubmit(data) {
+    console.log(data);
     const transformedVehicles = Object.entries(data.vehicles || {}).map(
-      ([vehicleId, available]) => ({
-        vehicleId,
-        available,
+      ([vehicle, available]) => ({
+        vehicle,
+        available: available === 'true',
       })
     );
+
+    console.log('Transformed Vehicles: ', transformedVehicles);
 
     const finalData = {
       name: data.name,
@@ -38,15 +40,16 @@ export default function UpdateAvailabilityRule() {
       vehicles: transformedVehicles,
     };
 
+    console.log('Final data: ', finalData);
+
     updateAvailabilityRule({ id, data: finalData });
   }
 
-  // ✅ Set default values when rule loads
   useEffect(() => {
     if (availabilityRule && zones?.length && vehicles?.length) {
       const vehicleMap = {};
       availabilityRule.vehicles.forEach((v) => {
-        vehicleMap[v.vehicleId?._id || v.vehicleId] = v.available;
+        vehicleMap[v._id] = v.available ? 'true' : 'false';
       });
 
       reset({
@@ -58,12 +61,10 @@ export default function UpdateAvailabilityRule() {
     }
   }, [id, availabilityRule, zones, vehicles, reset]);
 
-  if (isLoadingAvailabilityRule) return <Loading />;
-
   return (
     <>
       <Helmet>
-        <title>{availabilityRule?.name} | Availability Rules</title>
+        <title>{`${availabilityRule?.name} | Availability Rules`}</title>
       </Helmet>
 
       <Breadcrumb
@@ -81,6 +82,7 @@ export default function UpdateAvailabilityRule() {
         onSubmit={handleSubmit(onSubmit)}
         register={register}
         isLoading={isUpdatingAvailabilityRule}
+        control={control}
       />
     </>
   );

@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useDeleteImage } from '../hooks/useDeleteImage';
 import Input from '../../../components/FormElements/Input';
 import Label from '../../../components/FormElements/Label';
 import Select from '../../../components/FormElements/Select';
 import PrimaryButton from '../../../components/PrimaryButton';
 import Textarea from '../../../components/FormElements/Textarea';
 import Image from '../../../components/Image';
-import { useDeleteImage } from '../hooks/useDeleteImage';
 
 export default function VehicleForm({
   register,
@@ -15,34 +15,34 @@ export default function VehicleForm({
 }) {
   const [activeTab, setActiveTab] = useState('vehicleInformation');
 
+  const tabs = [
+    { name: 'Vehicle Information', key: 'vehicleInformation' },
+    { name: 'Pricing', key: 'vehiclePricing' },
+    { name: 'Images', key: 'images' },
+  ];
+
   return (
-    <form onSubmit={onSubmit}>
-      <div className="min-h-[450px] overflow-scroll flex flex-col bg-white p-7 mt-5 rounded-xl shadow-lg">
-        <div className="flex gap-2 text-sm mb-5">
-          {[
-            {
-              name: 'Vehicle Information',
-              component: 'vehicleInformation',
-            },
-            {
-              name: 'Vehicle Pricing',
-              component: 'vehiclePricing',
-            },
-            {
-              name: 'Images',
-              component: 'images',
-            },
-          ].map((opt, i) => (
-            <button
-              type="button"
-              className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${opt.component === activeTab ? 'bg-primary-900 text-primary-50' : 'bg-primary-200 text-primary-900 hover:bg-primary-300'}`}
-              key={i}
-              onClick={() => setActiveTab(opt.component)}
-            >
-              {opt.name}
-            </button>
-          ))}
-        </div>
+    <form onSubmit={onSubmit} className="space-y-6">
+      {/* --- Tabs --- */}
+      <div className="flex gap-3">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setActiveTab(tab.key)}
+            className={`relative py-2 px-4 text-sm font-medium transition-all duration-300 rounded-t-md ${
+              activeTab === tab.key
+                ? 'text-[#FF6B00] border-b-2 border-[#FF6B00]'
+                : 'text-gray-600 hover:text-black hover:bg-gray-100'
+            }`}
+          >
+            {tab.name}
+          </button>
+        ))}
+      </div>
+
+      {/* --- Tab Content --- */}
+      <div className="bg-white p-7 rounded-xl shadow-sm border border-gray-100 transition-all duration-300">
         {activeTab === 'vehicleInformation' && (
           <VehicleInformation register={register} />
         )}
@@ -53,163 +53,151 @@ export default function VehicleForm({
           <Images register={register} vehicle={vehicle} />
         )}
       </div>
-      <Actions isLoading={isLoading} />
+
+      {/* --- Action Buttons --- */}
+      <div className="flex justify-end bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <PrimaryButton type="submit" disabled={isLoading}>
+          {isLoading ? 'Updating...' : 'Update Vehicle'}
+        </PrimaryButton>
+      </div>
     </form>
   );
 }
 
+/* --------------------------
+   Vehicle Information Section
+--------------------------- */
 function VehicleInformation({ register }) {
+  const fields = [
+    ['Brand Name', 'brand', 'text'],
+    ['Model', 'model', 'text'],
+    ['Year', 'year', 'number'],
+    ['Description', 'description', 'textarea'],
+    ['Passengers', 'passengers', 'number'],
+    ['Luggage', 'luggage', 'number'],
+  ];
+
+  const selects = [
+    ['Type', 'type', ['Sedan', 'Crossover', 'SUV', 'Van']],
+    ['Fuel', 'fuel', ['Petrol', 'Diesel', 'Electric', 'Hybrid']],
+    ['Class', 'class', ['Standard', 'Premium', 'Business', 'Luxury']],
+  ];
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Brand Name</Label>
-        <Input {...register('brand')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Model</Label>
-        <Input {...register('model')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Year</Label>
-        <Input type="number" {...register('year')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Description</Label>
-        <Textarea rows={4} {...register('description')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Passengers</Label>
-        <Input type="number" {...register('passengers')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Luggage</Label>
-        <Input type="number" {...register('luggage')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Type</Label>
-        <Select {...register('type')}>
-          {['Sedan', 'Crossover', 'SUV', 'Van'].map((opt, i) => (
-            <option value={opt} key={i}>
-              {opt}
-            </option>
-          ))}
-        </Select>
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Fuel</Label>
-        <Select {...register('fuel')}>
-          {['Petrol', 'Diesel', 'Electric', 'Hybrid'].map((opt, i) => (
-            <option value={opt} key={i}>
-              {opt}
-            </option>
-          ))}
-        </Select>
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Class</Label>
-        <Select {...register('class')}>
-          {['Standard', 'Premium', 'Business', 'Luxury'].map((opt, i) => (
-            <option value={opt} key={i}>
-              {opt}
-            </option>
-          ))}
-        </Select>
-      </div>
+    <div className="space-y-4">
+      {fields.map(([label, name, type]) => (
+        <div key={name} className="grid grid-cols-[2fr_5fr] items-start gap-4">
+          <Label>{label}</Label>
+          {type === 'textarea' ? (
+            <Textarea rows={4} {...register(name)} />
+          ) : (
+            <Input type={type} {...register(name)} />
+          )}
+        </div>
+      ))}
+
+      {selects.map(([label, name, options]) => (
+        <div key={name} className="grid grid-cols-[2fr_5fr] items-center gap-4">
+          <Label>{label}</Label>
+          <Select {...register(name)}>
+            {options.map((opt) => (
+              <option value={opt} key={opt}>
+                {opt}
+              </option>
+            ))}
+          </Select>
+        </div>
+      ))}
     </div>
   );
 }
 
+/* --------------------------
+   Vehicle Pricing Section
+--------------------------- */
 function VehiclePricing({ register }) {
+  const fields = [
+    ['Initial Price', 'initialPrice'],
+    ['Price Per Hour', 'pricePerHour'],
+    ['Price Per KM', 'pricePerKm'],
+  ];
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Initial Price</Label>
-        <Input type="number" {...register('initialPrice')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Price Per Hour</Label>
-        <Input type="number" {...register('pricePerHour')} />
-      </div>
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Price Per KM</Label>
-        <Input type="number" {...register('pricePerKm')} />
-      </div>
+    <div className="space-y-4">
+      {fields.map(([label, name]) => (
+        <div key={name} className="grid grid-cols-[2fr_5fr] items-center gap-4">
+          <Label>{label}</Label>
+          <Input type="number" {...register(name)} />
+        </div>
+      ))}
     </div>
   );
 }
 
+/* --------------------------
+   Images Section
+--------------------------- */
 function Images({ register, vehicle }) {
   const { deleteImage, isDeleting } = useDeleteImage();
+  const hasImages = vehicle?.featuredImage || vehicle?.images?.length > 0;
 
   return (
-    <div className="flex flex-col gap-2">
-      {vehicle?.featuredImage || vehicle?.images ? (
-        <div className="grid grid-cols-4 gap-4 mb-5">
-          {vehicle?.featuredImage && (
-            <Image
-              featured={true}
-              src={vehicle?.featuredImage}
-              className="object-cover"
-              isDeleting={isDeleting}
-              onDelete={() => {
-                deleteImage({
-                  id: vehicle._id,
-                  imageUrl: vehicle.featuredImage,
-                });
-              }}
-            />
-          )}
-          {vehicle?.images &&
-            vehicle?.images.map((image, i) => (
+    <div>
+      {hasImages && (
+        <div className="mb-15">
+          <p className="font-medium text-gray-700 mb-3">Existing Images</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {vehicle?.featuredImage && (
               <Image
-                key={i}
-                src={image}
-                className="object-contain"
+                featured
+                src={vehicle.featuredImage}
                 isDeleting={isDeleting}
-                onDelete={() => {
+                onDelete={() =>
                   deleteImage({
                     id: vehicle._id,
-                    imageUrl: image,
-                  });
-                }}
+                    imageUrl: vehicle.featuredImage,
+                  })
+                }
+              />
+            )}
+            {vehicle?.images?.map((img, i) => (
+              <Image
+                key={i}
+                src={img}
+                isDeleting={isDeleting}
+                onDelete={() =>
+                  deleteImage({
+                    id: vehicle._id,
+                    imageUrl: img,
+                  })
+                }
               />
             ))}
+          </div>
         </div>
-      ) : (
-        ''
       )}
 
       {!vehicle?.featuredImage && (
-        <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
+        <div className="grid grid-cols-[2fr_5fr] items-center gap-4">
           <Label>Featured Image</Label>
           <Input
             type="file"
             {...register('featuredImage')}
             multiple={false}
-            accept=".png,.jpeg,.jpg,.webp"
+            accept=".png,.jpeg,.jpg,.webp,.avif"
           />
         </div>
       )}
 
-      <div className="grid grid-cols-[3fr_6fr_3fr] items-center">
-        <Label>Images</Label>
+      <div className="grid grid-cols-[2fr_5fr] items-center gap-4">
+        <Label>Additional Images</Label>
         <Input
           type="file"
           {...register('images')}
           multiple
-          accept=".png,.jpeg,.jpg,.webp"
+          accept=".png,.jpeg,.jpg,.webp,.avif"
         />
       </div>
-    </div>
-  );
-}
-
-function Actions({ isLoading }) {
-  return (
-    <div className="h-[70px] flex items-center gap-3 bg-white p-7 mt-5 rounded-xl shadow-lg">
-      <PrimaryButton type="submit" disabled={isLoading}>
-        {isLoading ? 'Updating...' : 'Update Vehicle'}
-      </PrimaryButton>
     </div>
   );
 }

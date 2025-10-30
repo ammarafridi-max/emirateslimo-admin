@@ -12,12 +12,13 @@ export function useDeleteZone() {
       const confirmDelete = window.confirm(
         'Are you sure you want to delete this zone?'
       );
-      if (!confirmDelete) throw new Error('Delete cancelled');
+      if (!confirmDelete) return null;
       return deleteZoneApi(id);
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if (!res) return;
       toast.success('Zone deleted successfully');
-      queryClient.invalidateQueries({ queryKey: ['zones'] }); // refresh list
+      queryClient.invalidateQueries({ queryKey: ['zones'] });
       navigate('/zones');
     },
     onError: (err) => {

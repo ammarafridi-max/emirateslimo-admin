@@ -1,87 +1,44 @@
-import { baseURL } from '../../../utils/baseUrl';
-import { jwtCookie } from '../../../services/jwt';
+import { apiFetch } from '../../../utils/apiClient';
 
-const URL = `${baseURL}/api/availability-rules`;
+const ENDPOINT = '/api/availability-rules';
 
-async function checkError(res) {
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || 'Something went wrong');
-  }
-}
-
-async function returnData(res) {
-  const json = await res.json();
-  return json?.data;
-}
-
-// Get all rules
+// ✅ Get all rules
 export async function getAllAvailabilityRulesApi() {
-  const res = await fetch(URL, {
-    headers: { Authorization: `Bearer ${jwtCookie}` },
-  });
-
-  await checkError(res);
-  return await returnData(res);
+  return await apiFetch(ENDPOINT);
 }
 
-// Get single rule
+// ✅ Get single rule
 export async function getAvailabilityRuleApi(id) {
-  const res = await fetch(`${URL}/${id}`, {
-    headers: { Authorization: `Bearer ${jwtCookie}` },
-  });
-
-  await checkError(res);
-  return await returnData(res);
+  return await apiFetch(`${ENDPOINT}/${id}`);
 }
 
-// Create new rule
-export async function createAvailabilityRuleApi(formData) {
-  const res = await fetch(URL, {
+// ✅ Create new rule
+export async function createAvailabilityRuleApi(data) {
+  return await apiFetch(ENDPOINT, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwtCookie}`,
-    },
-    body: JSON.stringify(formData),
-  });
-
-  await checkError(res);
-  return await returnData(res);
-}
-
-// Update rule
-export async function updateAvailabilityRuleApi({ id, data }) {
-  const res = await fetch(`${URL}/${id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwtCookie}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-
-  await checkError(res);
-  return await returnData(res);
 }
 
-// Delete rule
-export async function deleteAvailabilityRuleApi(id) {
-  const res = await fetch(`${URL}/${id}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${jwtCookie}` },
+// ✅ Update rule
+export async function updateAvailabilityRuleApi({ id, data }) {
+  return await apiFetch(`${ENDPOINT}/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   });
+}
 
-  await checkError(res);
+// ✅ Delete rule
+export async function deleteAvailabilityRuleApi(id) {
+  await apiFetch(`${ENDPOINT}/${id}`, { method: 'DELETE' });
   return true;
 }
 
+// ✅ Duplicate rule
 export async function duplicateAvailabilityRuleApi(id) {
-  const res = await fetch(`${URL}/${id}/duplicate`, {
+  return await apiFetch(`${ENDPOINT}/${id}/duplicate`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${jwtCookie}` },
   });
-
-  await checkError(res);
-  return await returnData(res);
 }

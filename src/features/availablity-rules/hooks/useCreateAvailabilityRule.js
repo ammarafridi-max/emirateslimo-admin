@@ -13,9 +13,9 @@ export function useCreateAvailabilityRule() {
   } = useMutation({
     mutationFn: createAvailabilityRuleApi,
     onSuccess: () => {
-      navigate('/availability-rules');
-      toast.success('Availability rule created successfully');
       queryClient.invalidateQueries({ queryKey: ['availability-rules'] });
+      toast.success('Availability rule created successfully');
+      navigate('/availability-rules');
     },
     onError: () => {
       toast.error('Availability rule could not be created');

@@ -11,8 +11,10 @@ export function useUpdateZone() {
     mutationFn: ({ id, zoneData }) => updateZoneApi(id, zoneData),
     onSuccess: (updatedZone) => {
       toast.success(`Zone "${updatedZone.name}" updated successfully`);
-      queryClient.invalidateQueries({ queryKey: ['zones'] }); // refresh list
+      queryClient.invalidateQueries({ queryKey: ['zones'] });
+      navigate('/zones');
     },
+
     onError: (err) => {
       toast.error(err.message || 'Failed to update zone');
     },

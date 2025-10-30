@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { duplicateZoneApi } from '../services/zoneApi';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export function useDuplicateZone() {
   const queryClient = useQueryClient();

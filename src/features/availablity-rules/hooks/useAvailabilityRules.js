@@ -12,6 +12,7 @@ export function useAvailabilityRules() {
     queryFn: getAllAvailabilityRulesApi,
     keepPreviousData: true,
     staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 
   return {

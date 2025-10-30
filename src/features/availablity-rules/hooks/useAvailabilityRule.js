@@ -6,7 +6,8 @@ export function useAvailabilityRule(id) {
     useQuery({
       queryKey: ['availability-rule', id],
       queryFn: () => getAvailabilityRuleApi(id),
-      enabled: !!id, // only fetch when id exists
+      enabled: !!id,
+      staleTime: 60 * 1000,
     });
 
   return { availabilityRule, isLoadingAvailabilityRule };

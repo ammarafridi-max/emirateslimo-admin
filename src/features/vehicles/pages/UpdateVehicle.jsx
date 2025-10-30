@@ -70,6 +70,13 @@ export default function UpdateVehicle() {
       }
     }
 
+    console.log(
+      'Pricing sent:',
+      data.initialPrice,
+      data.pricePerHour,
+      data.pricePerKm
+    );
+
     // Trigger mutation
     updateVehicle({ id, formData });
   }
