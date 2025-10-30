@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useLogin } from './useLogin';
+import { useLogin } from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import Cookies from 'universal-cookie';
-import PrimaryButton from '../../components/PrimaryButton';
-import Input from '../../components/FormElements/Input';
-import Label from '../../components/FormElements/Label';
+import PrimaryButton from '../../../components/PrimaryButton';
+import Input from '../../../components/FormElements/Input';
+import Label from '../../../components/FormElements/Label';
 
-export default function Login() {
+export default function LoginForm() {
   const navigate = useNavigate();
   const { login, isLoggingIn } = useLogin();
   const [username, setUsername] = useState('');
@@ -17,6 +16,7 @@ export default function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(username, password);
     login({ username, password });
   }
 
@@ -26,10 +26,6 @@ export default function Login() {
 
   return (
     <>
-      <Helmet>
-        <title>Login</title>
-      </Helmet>
-
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0D0D0D] to-[#1A1A1A]">
         <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl rounded-2xl w-[400px] p-10 text-white">
           {/* Logo / Title */}
