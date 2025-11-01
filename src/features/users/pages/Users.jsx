@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaPlus } from 'react-icons/fa6';
-import { useJwtData } from '../../../services/jwt';
 import { useUsers } from '../hooks/useUsers';
 import DangerPill from '../../../components/DangerPill';
 import SuccessPill from '../../../components/SuccessPill';
@@ -9,11 +8,13 @@ import Table from '../../../components/Table';
 import PageHeading from '../../../components/PageHeading';
 import Breadcrumb from '../../../components/Breadcrumb';
 import Loading from '../../../components/Loading';
+import PrimaryLink from '../../../components/PrimaryLink';
+import { useDeleteUser } from '../hooks/useDeleteUser';
 
 export default function Users() {
   const { users, isLoadingUsers } = useUsers();
+  const { deleteUser, isDeleting } = useDeleteUser();
   const navigate = useNavigate();
-  const jwtData = useJwtData();
 
   // useEffect(() => {
   //   if (jwtData?.role?.toLowerCase() !== 'admin') {
@@ -23,6 +24,8 @@ export default function Users() {
   // }, [navigate]);
 
   if (isLoadingUsers) return <Loading />;
+
+  console.log(users);
 
   return (
     <>
@@ -35,34 +38,38 @@ export default function Users() {
           { label: 'Users', href: '/users' },
         ]}
       />
-      <PageHeading>Users</PageHeading>
-      <Table $columnTemplate="1fr 1fr 1.5fr 1fr 0.5fr">
+      <PageHeading className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <h1 className="text-[26px] font-semibold text-gray-900">Users</h1>
+        <PrimaryLink to="/users/create" size="small">
+          + Create User
+        </PrimaryLink>
+      </PageHeading>
+
+      <Table $columntemplate="1.5fr_1.5fr_2fr_2fr_1fr_1fr">
         <Table.Head>
           <Table.Heading textAlign="left">Name</Table.Heading>
           <Table.Heading textAlign="left">Username</Table.Heading>
           <Table.Heading textAlign="left">Email</Table.Heading>
-          <Table.Heading>Role</Table.Heading>
-          <Table.Heading>Status</Table.Heading>
+          <Table.Heading textAlign="center">Role</Table.Heading>
+          <Table.Heading textAlign="center">Active</Table.Heading>
         </Table.Head>
         {users?.map((user, i) => (
-          <Table.Row
-            key={i}
-            href={
-              jwtData.username === user.username
-                ? `account`
-                : `/users/${user.username}`
-            }
-          >
-            <Table.Item textAlign="left">{user.name}</Table.Item>
+          <Table.Row key={i} href={`/users/${user._id}`}>
+            <Table.Item textAlign="left">{`${user.firstName} ${user.lastName}`}</Table.Item>
             <Table.Item textAlign="left">{user.username}</Table.Item>
             <Table.Item textAlign="left">{user.email}</Table.Item>
-            <Table.Item textTransform="capitalize">{user.role}</Table.Item>
+            <Table.Item textAlign="center">{user.role}</Table.Item>
             <Table.Item textAlign="center">
-              {user.status === 'ACTIVE' ? (
-                <SuccessPill>{user.status}</SuccessPill>
+              {user?.isActive ? (
+                <SuccessPill>Active</SuccessPill>
               ) : (
-                <DangerPill>{user.status}</DangerPill>
+                <DangerPill>Inactive</DangerPill>
               )}
+            </Table.Item>
+            <Table.Item>
+              <Table.DeleteLink onClick={() => deleteUser(user._id)}>
+                Delete User
+              </Table.DeleteLink>
             </Table.Item>
           </Table.Row>
         ))}

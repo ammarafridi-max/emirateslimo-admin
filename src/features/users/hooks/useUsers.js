@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '../services/userApi';
+import { getUsersApi } from '../services/userApi';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -11,7 +11,7 @@ export function useUsers() {
     error,
   } = useQuery({
     queryKey: ['users'],
-    queryFn: () => getUsers(),
+    queryFn: () => getUsersApi(),
     onError: (error) => {
       toast.error(error.message);
       setTimeout(() => {

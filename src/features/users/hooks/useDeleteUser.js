@@ -3,13 +3,12 @@ import { deleteUserApi } from '../services/userApi';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-export function useDeleteUser(username) {
+export function useDeleteUser(id) {
   const navigate = useNavigate();
   const { mutate: deleteUser, isLoading: isDeleting } = useMutation({
-    mutationKey: ['user'],
-    mutationFn: () => {
-      confirm('Are you sure you want to delete this user?');
-      deleteUserApi(username);
+    mutationFn: (id) => {
+      if (!confirm('Are you sure you want to delete this user?')) return;
+      return deleteUserApi(id);
     },
     onSuccess: () => {
       toast.success('User deleted successfully!');
