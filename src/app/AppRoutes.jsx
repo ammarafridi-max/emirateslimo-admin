@@ -3,15 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // Layouts
 import AppLayout from '../layouts/AppLayout';
 
+// Other Pages
 import Dashboard from '../pages/Dashboard';
-import Login from '../features/auth/Login';
+import Login from '../features/auth/pages/Login';
 import PrivateRoutes from '../pages/PrivateRoutes';
 import NotFound from '../pages/NotFound';
-
-// Users
-import Users from '../features/users/pages/Users';
-import CreateUser from '../features/users/pages/CreateUser';
-import UpdateUser from '../features/users/pages/UpdateUser';
 
 // Zones
 import Zones from '../features/zones/pages/Zones';
@@ -35,7 +31,17 @@ import UpdateAvailabilityRule from '../features/availablity-rules/pages/UpdateAv
 
 // Bookings
 import Bookings from '../features/bookings/pages/Bookings';
+import UpdateBooking from '../features/bookings/pages/UpdateBooking';
 
+// Currencies
+import Currencies from '../features/currencies/pages/Currencies';
+import CreateCurrency from '../features/currencies/pages/CreateCurrency';
+import UpdateCurrency from '../features/currencies/pages/UpdateCurrency';
+
+// Users
+import Users from '../features/users/pages/Users';
+import CreateUser from '../features/users/pages/CreateUser';
+import UpdateUser from '../features/users/pages/UpdateUser';
 import MyAccount from '../features/account/MyAccount';
 
 export default function AppRoutes() {
@@ -68,9 +74,13 @@ export default function AppRoutes() {
             element={<UpdateAvailabilityRule />}
           />
           <Route path="bookings" element={<Bookings />} />
+          <Route path="bookings/:id" element={<UpdateBooking />} />
+          <Route path="currencies" element={<Currencies />} />
+          <Route path="currencies/create" element={<CreateCurrency />} />
+          <Route path="currencies/:id" element={<UpdateCurrency />} />
           <Route path="users" element={<Users />} />
           <Route path="users/create" element={<CreateUser />} />
-          <Route path="users/:username" element={<UpdateUser />} />
+          <Route path="users/:id" element={<UpdateUser />} />
         </Route>
         {/* </Route> */}
       </Routes>
