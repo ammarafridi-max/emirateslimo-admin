@@ -99,7 +99,8 @@ export default function Bookings() {
                 <Table.Item textAlign="right">
                   <div className="flex flex-col items-end gap-1">
                     <span className="font-semibold text-gray-900">
-                      AED {b?.orderSummary?.total?.toLocaleString()}
+                      {b?.orderSummary?.currency.toUpperCase()}{' '}
+                      {b?.orderSummary?.total?.toLocaleString()}
                     </span>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold w-fit ${

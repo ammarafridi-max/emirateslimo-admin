@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaPlus } from 'react-icons/fa6';
 import { useUsers } from '../hooks/useUsers';
+import { useDeleteUser } from '../hooks/useDeleteUser';
 import DangerPill from '../../../components/DangerPill';
 import SuccessPill from '../../../components/SuccessPill';
 import Table from '../../../components/Table';
@@ -9,7 +10,6 @@ import PageHeading from '../../../components/PageHeading';
 import Breadcrumb from '../../../components/Breadcrumb';
 import Loading from '../../../components/Loading';
 import PrimaryLink from '../../../components/PrimaryLink';
-import { useDeleteUser } from '../hooks/useDeleteUser';
 
 export default function Users() {
   const { users, isLoadingUsers } = useUsers();
@@ -24,8 +24,6 @@ export default function Users() {
   // }, [navigate]);
 
   if (isLoadingUsers) return <Loading />;
-
-  console.log(users);
 
   return (
     <>

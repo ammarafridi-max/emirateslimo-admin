@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useVehicle } from '../hooks/useVehicle';
 import { useUpdateVehicle } from '../hooks/useUpdateVehicle';
+import { Helmet } from 'react-helmet-async';
 import VehicleForm from '../components/VehicleForm';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
-import { Helmet } from 'react-helmet-async';
 
 export default function UpdateVehicle() {
   const { id } = useParams();
@@ -15,7 +15,6 @@ export default function UpdateVehicle() {
 
   const { register, handleSubmit, reset } = useForm();
 
-  // ✅ Populate form when vehicle data loads
   useEffect(() => {
     if (vehicle) {
       reset({
