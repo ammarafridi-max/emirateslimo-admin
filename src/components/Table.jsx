@@ -40,7 +40,7 @@ function Heading({ children, textAlign = 'left' }) {
 
 function Row({ children, onClick, href }) {
   const { $columntemplate } = useContext(TableContext);
-  const Component = href ? 'a' : 'div';
+  const Component = href ? 'a' : 'p';
 
   return (
     <Component
@@ -89,34 +89,36 @@ function Link({ href, children }) {
   );
 }
 
-function DeleteLink({ onClick }) {
+function DeleteLink({ onClick, isDeleting }) {
   return (
     <button
+      disabled={isDeleting}
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
         onClick();
       }}
       type="button"
-      className="text-red-600 hover:underline font-medium transition-colors"
+      className="text-red-600 hover:underline font-medium transition-colors cursor-pointer"
     >
-      Delete
+      {isDeleting ? 'Deleting...' : 'Delete'}
     </button>
   );
 }
 
-function DuplicateLink({ onClick }) {
+function DuplicateLink({ onClick, isDuplicating }) {
   return (
     <button
+      disabled={isDuplicating}
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
         onClick();
       }}
       type="button"
-      className="text-blue-600 hover:underline font-medium transition-colors"
+      className="text-blue-600 hover:underline font-medium transition-colors cursor-pointer"
     >
-      Duplicate
+      {isDuplicating ? 'Duplicating...' : 'Duplicate'}
     </button>
   );
 }
