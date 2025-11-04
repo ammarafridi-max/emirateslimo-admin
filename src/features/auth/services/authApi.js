@@ -1,4 +1,5 @@
 import { apiFetch } from '../../../utils/apiClient';
+import { baseURL } from '../../../utils/baseUrl';
 
 export async function signupApi(userData) {
   return await apiFetch('/api/auth/signup', {
@@ -9,12 +10,18 @@ export async function signupApi(userData) {
 }
 
 export async function loginApi(credentials) {
-  console.log(credentials);
-  return await apiFetch('/api/auth/login', {
+  const response = await fetch(`${baseURL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
+
+  if (!response.ok) {
+    throw new Error('Failed to login');
+  }
+
+  const data = await response.json();
+  return data;
 }
 
 export async function getMeApi() {

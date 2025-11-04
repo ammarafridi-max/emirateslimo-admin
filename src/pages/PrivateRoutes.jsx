@@ -7,10 +7,8 @@ export default function PrivateRoutes({ children }) {
   const jwtToken = cookies.get('jwt');
 
   if (!jwtToken) {
-    <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
-  if (jwtToken) {
-    return <Outlet />;
-  }
+  return children || <Outlet />;
 }

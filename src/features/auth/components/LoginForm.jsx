@@ -16,7 +16,6 @@ export default function LoginForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(username, password);
     login({ username, password });
   }
 

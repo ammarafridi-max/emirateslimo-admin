@@ -1,19 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import Cookies from 'universal-cookie';
 
 export function useLogout() {
-  // const navigate = useNavigate();
-  // const { mutate: logout, isLoading: isLoggingOut } = useMutation({
-  //   mutationFn: logoutApi,
-  //   onSuccess: () => {
-  //     toast.success('Logged out successfully.');
-  //     navigate('/login');
-  //   },
-  // });
+  const cookies = new Cookies();
 
-  return 'ABC';
+  function logout() {
+    cookies.remove('jwt', { path: '/' });
+    window.location.href = '/login';
+  }
 
-  // return { logout, isLoggingOut };
+  return { logout };
 }
