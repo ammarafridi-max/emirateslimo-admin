@@ -25,9 +25,9 @@ import CreatePricing from '../features/pricing/pages/CreatePricing';
 import UpdatePricing from '../features/pricing/pages/UpdatePricing';
 
 // Availability Rules
-import AvailabilityRules from '../features/availablity-rules/pages/AvailablityRules';
-import CreateAvailabilityRule from '../features/availablity-rules/pages/CreateAvailabilityRule';
-import UpdateAvailabilityRule from '../features/availablity-rules/pages/UpdateAvailabilityRule';
+import AvailabilityRules from '../features/availability-rules/pages/AvailablityRules';
+import CreateAvailabilityRule from '../features/availability-rules/pages/CreateAvailabilityRule';
+import UpdateAvailabilityRule from '../features/availability-rules/pages/UpdateAvailabilityRule';
 
 // Bookings
 import Bookings from '../features/bookings/pages/Bookings';
