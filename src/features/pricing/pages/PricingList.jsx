@@ -7,6 +7,7 @@ import Breadcrumb from '../../../components/Breadcrumb';
 import Table from '../../../components/Table';
 import PrimaryLink from '../../../components/PrimaryLink';
 import Loading from '../../../components/Loading';
+import PricingFilters from '../components/PricingFilters';
 
 export default function PricingList() {
   const { pricingRules, isLoadingPricingRules } = usePricingRules();
@@ -35,6 +36,8 @@ export default function PricingList() {
         </PrimaryLink>
       </div>
 
+      <PricingFilters />
+
       <Table $columntemplate="4fr 1fr 2fr 2fr 1fr">
         <Table.Head>
           <Table.Heading>Name</Table.Heading>
@@ -43,50 +46,59 @@ export default function PricingList() {
           <Table.Heading>To Zone</Table.Heading>
           <Table.Heading>Pricing</Table.Heading>
         </Table.Head>
-        {pricingRules?.map((rule) => (
-          <Table.Row key={rule._id} href={`/pricing/${rule._id}`}>
-            <Table.Item>
-              <span>{rule?.name}</span>
-              <div className="flex gap-2 mt-2">
-                <Table.DeleteLink
-                  onClick={() => deletePricingRule(rule?._id)}
-                />
-                <Table.DuplicateLink
-                  onClick={() => duplicatePricingRule(rule?._id)}
-                />
-              </div>
-            </Table.Item>
-            <Table.Item>
-              {rule?.vehicles.map((vehicle) => (
-                <Table.Link href={`/vehicles/${vehicle?._id}`}>
-                  {vehicle.brand} {vehicle.model}
-                </Table.Link>
-              ))}
-            </Table.Item>
-            <Table.Item>
-              {rule?.pickupZones.map((zone) => (
-                <Table.Link href={`/zones/${zone?._id}`}>
-                  {zone.name}
-                </Table.Link>
-              ))}
-            </Table.Item>
-            <Table.Item>
-              {rule?.dropoffZones.map((zone) => (
-                <Table.Link href={`/zones/${zone?._id}`}>
-                  {zone.name}
-                </Table.Link>
-              ))}
-            </Table.Item>
-            <Table.Item>
-              <span className="block font-extralight">
-                One Way: {rule?.pricing?.oneWay}
-              </span>
-              <span className="block font-extralight">
-                Return: {rule?.pricing?.return}
-              </span>
-            </Table.Item>
-          </Table.Row>
-        ))}
+        {pricingRules.length ? (
+          pricingRules?.map((rule) => (
+            <Table.Row key={rule?._id} href={`/pricing/${rule._id}`}>
+              <Table.Item>
+                <span>{rule?.name}</span>
+                <div className="flex gap-2 mt-2">
+                  <Table.DeleteLink
+                    onClick={() => deletePricingRule(rule?._id)}
+                  />
+                  <Table.DuplicateLink
+                    onClick={() => duplicatePricingRule(rule?._id)}
+                  />
+                </div>
+              </Table.Item>
+              <Table.Item>
+                {rule?.vehicles.map((vehicle) => (
+                  <Table.Link
+                    key={vehicle?._id}
+                    href={`/vehicles/${vehicle?._id}`}
+                  >
+                    {vehicle.brand} {vehicle.model}
+                  </Table.Link>
+                ))}
+              </Table.Item>
+              <Table.Item>
+                {rule?.pickupZones.map((zone) => (
+                  <Table.Link key={zone?._id} href={`/zones/${zone?._id}`}>
+                    {zone.name}
+                  </Table.Link>
+                ))}
+              </Table.Item>
+              <Table.Item>
+                {rule?.dropoffZones.map((zone) => (
+                  <Table.Link key={zone?._id} href={`/zones/${zone?._id}`}>
+                    {zone.name}
+                  </Table.Link>
+                ))}
+              </Table.Item>
+              <Table.Item>
+                <span className="block font-extralight">
+                  One Way: {rule?.pricing?.oneWay}
+                </span>
+                <span className="block font-extralight">
+                  Return: {rule?.pricing?.return}
+                </span>
+              </Table.Item>
+            </Table.Row>
+          ))
+        ) : (
+          <div className="text-center text-gray-500 py-10">
+            No pricing rules found for the selected filters.
+          </div>
+        )}
       </Table>
     </>
   );

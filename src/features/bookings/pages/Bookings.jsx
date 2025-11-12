@@ -1,11 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 import { useBookings } from '../hooks/useBookings';
+import { useDeleteBooking } from '../hooks/useDeleteBooking';
 import Loading from '../../../components/Loading';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import Table from '../../../components/Table';
-import { useDeleteBooking } from '../hooks/useDeleteBooking';
-import Filter from '../components/Filter';
+import BookingsFilter from '../components/BookingsFilter';
 
 export default function Bookings() {
   const { bookings, isLoadingBookings } = useBookings();
@@ -19,7 +19,6 @@ export default function Bookings() {
         <title>Bookings</title>
       </Helmet>
 
-      {/* Breadcrumb */}
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
@@ -27,14 +26,12 @@ export default function Bookings() {
         ]}
       />
 
-      {/* Page Heading */}
       <PageHeading className="mb-6 flex gap-6 items-center justify-between">
         Bookings
       </PageHeading>
 
-      <Filter />
+      <BookingsFilter />
 
-      {/* Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         {bookings?.length > 0 ? (
           <Table $columntemplate="2fr 6fr 1fr 1fr">

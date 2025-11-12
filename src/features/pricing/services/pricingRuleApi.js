@@ -15,8 +15,14 @@ async function returnData(res) {
   return json?.data;
 }
 
-export async function getAllPricingRulesApi() {
-  const res = await fetch(URL, {
+export async function getAllPricingRulesApi(filters) {
+  const query = new URLSearchParams();
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) query.append(key, value);
+  });
+
+  const res = await fetch(`${URL}?${query.toString()}`, {
     headers: { Authorization: `Bearer ${jwtCookie}` },
   });
 
