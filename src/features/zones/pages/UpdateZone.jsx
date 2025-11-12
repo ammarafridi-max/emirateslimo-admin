@@ -30,18 +30,18 @@ export default function UpdateZone() {
   return (
     <>
       <Helmet>
-        <title>{zone.name}</title>
+        <title>{zone?.name}</title>
       </Helmet>
 
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
           { label: 'Zones', href: '/zones' },
-          { label: 'Update Zone', href: `/zones/update/${id}` },
+          { label: zone?.name, href: `/zones/update/${id}` },
         ]}
       />
 
-      <PageHeading className="mb-5">Update Zone</PageHeading>
+      <PageHeading className="mb-5">{zone?.name}</PageHeading>
 
       <ZoneForm
         mode="update"

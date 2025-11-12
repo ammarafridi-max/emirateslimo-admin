@@ -4,7 +4,7 @@ import { getAllVehiclesApi } from '../services/vehicleApi';
 export function useVehicles() {
   const {
     data: vehicles,
-    isLoading,
+    isLoading: isLoadingVehicles,
     isError,
     error,
   } = useQuery({
@@ -14,5 +14,5 @@ export function useVehicles() {
     staleTime: 5 * 60 * 1000,
   });
 
-  return { vehicles: vehicles ?? [], isLoading, isError, error };
+  return { vehicles: vehicles ?? [], isLoadingVehicles, isError, error };
 }

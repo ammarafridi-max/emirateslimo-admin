@@ -157,14 +157,11 @@ export default function ZoneForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Zone Name Input */}
-      <div className="bg-white p-7 rounded-xl shadow-lg">
-        <Input
-          placeholder="Enter Zone Name"
-          value={zoneName}
-          onChange={(e) => setZoneName(e.target.value)}
-        />
-      </div>
+      <Input
+        placeholder="Zone Name"
+        value={zoneName}
+        onChange={(e) => setZoneName(e.target.value)}
+      />
 
       {/* Map Section */}
       <div className="bg-white p-7 rounded-xl shadow-lg">

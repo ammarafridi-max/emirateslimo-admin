@@ -80,23 +80,25 @@ export default function UpdateVehicle() {
     updateVehicle({ id, formData });
   }
 
+  const vehicleName = `${vehicle?.brand || ''} ${vehicle?.model || ''}`;
+
   if (isLoading) return <p>Loading vehicle...</p>;
 
   return (
     <div>
       <Helmet>
-        <title>{`${vehicle?.brand || ''} ${vehicle?.model || ''} | Vehicles`}</title>
+        <title>{`${vehicleName} | Vehicles`}</title>
       </Helmet>
 
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
           { label: 'Vehicles', href: '/vehicles' },
-          { label: 'Update Vehicle', href: `/vehicles/${id}/edit` },
+          { label: `${vehicleName}`, href: `/vehicles/${id}/edit` },
         ]}
       />
 
-      <PageHeading>Update Vehicle</PageHeading>
+      <PageHeading>{vehicleName}</PageHeading>
 
       <VehicleForm
         vehicle={vehicle}

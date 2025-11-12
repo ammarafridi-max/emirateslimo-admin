@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useLogout } from '../features/auth/hooks/useLogout';
 import {
@@ -9,21 +8,18 @@ import Navigation from '../components/Navigation';
 
 export default function AppLayout() {
   const { logout } = useLogout();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="grid grid-cols-[2fr_10fr] h-screen w-full bg-[#0F0F0F] text-gray-900 overflow-hidden">
-      <aside
-        className={`w-full transition-all duration-300 bg-gradient-to-b from-[#0D0D0D] to-[#1A1A1A] border-r border-[#222] flex flex-col`}
-      >
+    <div className="grid grid-cols-[2fr_10fr] w-full min-h-screen bg-[#0F0F0F] text-gray-900">
+      <aside className="sticky top-0 h-screen bg-gradient-to-b from-[#0D0D0D] to-[#1A1A1A] border-r border-[#222] flex flex-col">
         <Navigation />
       </aside>
 
-      <div className="flex flex-col bg-gray-50 overflow-scroll">
+      <div className="flex flex-col bg-gray-50 min-h-screen overflow-scroll">
         <header className="w-full bg-white border-b border-gray-200 flex items-center justify-between px-8 py-3 shadow-sm">
           <div className="w-full flex items-center justify-between gap-3">
             <div>
-              <img src="logo-light.png" className="w-40" />
+              <img src="/logo-light.png" className="w-40" />
             </div>
             <div className="flex gap-2 items-center justify-end">
               <a
@@ -44,7 +40,7 @@ export default function AppLayout() {
             </div>
           </div>
         </header>
-        <main className="bg-gray-100 flex-1 overflow-y-auto px-8 py-6">
+        <main className="bg-gray-100 flex-1 px-8 py-6">
           <Outlet />
         </main>
       </div>
