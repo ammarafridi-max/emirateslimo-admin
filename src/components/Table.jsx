@@ -99,7 +99,7 @@ function DeleteLink({ onClick, isDeleting }) {
         onClick();
       }}
       type="button"
-      className="text-red-600 hover:underline font-medium transition-colors cursor-pointer"
+      className="bg-red-100 text-red-700 text-[12px] px-3 py-1 rounded-md hover:underline font-normal transition-colors cursor-pointer"
     >
       {isDeleting ? 'Deleting...' : 'Delete'}
     </button>
@@ -116,7 +116,7 @@ function DuplicateLink({ onClick, isDuplicating }) {
         onClick();
       }}
       type="button"
-      className="text-blue-600 hover:underline font-medium transition-colors cursor-pointer"
+      className="bg-blue-100 text-blue-600 text-[12px] px-3 py-1 rounded-md hover:underline font-medium transition-colors cursor-pointer"
     >
       {isDuplicating ? 'Duplicating...' : 'Duplicate'}
     </button>
