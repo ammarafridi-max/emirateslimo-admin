@@ -6,12 +6,15 @@ import PageHeading from '../../../components/PageHeading';
 import Breadcrumb from '../../../components/Breadcrumb';
 import Table from '../../../components/Table';
 import PrimaryLink from '../../../components/PrimaryLink';
+import Loading from '../../../components/Loading';
 
 export default function PricingList() {
-  const { pricingRules } = usePricingRules();
+  const { pricingRules, isLoadingPricingRules } = usePricingRules();
   const { deletePricingRule, isDeletingPricingRule } = useDeletePricingRule();
   const { duplicatePricingRule, isDuplicatingPricingRule } =
     useDuplicatePricingRule();
+
+  if (isLoadingPricingRules) return <Loading />;
 
   return (
     <>
@@ -32,7 +35,7 @@ export default function PricingList() {
         </PrimaryLink>
       </div>
 
-      <Table $columntemplate="3fr 1fr 1fr 1fr 1fr">
+      <Table $columntemplate="4fr 1fr 2fr 2fr 1fr">
         <Table.Head>
           <Table.Heading>Name</Table.Heading>
           <Table.Heading>Vehicles</Table.Heading>
@@ -43,8 +46,8 @@ export default function PricingList() {
         {pricingRules?.map((rule) => (
           <Table.Row key={rule._id} href={`/pricing/${rule._id}`}>
             <Table.Item>
-              <div>{rule?.name}</div>
-              <div className="flex gap-2">
+              <span>{rule?.name}</span>
+              <div className="flex gap-2 mt-2">
                 <Table.DeleteLink
                   onClick={() => deletePricingRule(rule?._id)}
                 />
@@ -75,8 +78,12 @@ export default function PricingList() {
               ))}
             </Table.Item>
             <Table.Item>
-              <span className="block">One Way: {rule?.pricing?.oneWay}</span>
-              <span className="block">Return: {rule?.pricing?.return}</span>
+              <span className="block font-extralight">
+                One Way: {rule?.pricing?.oneWay}
+              </span>
+              <span className="block font-extralight">
+                Return: {rule?.pricing?.return}
+              </span>
             </Table.Item>
           </Table.Row>
         ))}

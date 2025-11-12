@@ -4,6 +4,7 @@ import { useVehicles } from '../../vehicles/hooks/useVehicles';
 import Label from '../../../components/FormElements/Label';
 import Input from '../../../components/FormElements/Input';
 import PrimaryButton from '../../../components/PrimaryButton';
+import Loading from '../../../components/Loading';
 
 export default function PricingForm({ register, onSubmit }) {
   const [activeTab, setActiveTab] = useState('vehiclesRoutes');
@@ -44,17 +45,14 @@ export default function PricingForm({ register, onSubmit }) {
 }
 
 function PricingRuleName({ register }) {
-  return (
-    <div>
-      <p className="mb-2 text-2xl font-medium">Pricing Rule Name</p>
-      <Input placeholder="Enter Pricing Rule Name" {...register('name')} />
-    </div>
-  );
+  return <Input placeholder="Enter Pricing Rule Name" {...register('name')} />;
 }
 
 function VehiclesZones({ register }) {
-  const { zones } = useZones();
-  const { vehicles } = useVehicles();
+  const { zones, isLoadingZones } = useZones();
+  const { vehicles, isLoadingVehicles } = useVehicles();
+
+  if (isLoadingVehicles || isLoadingZones) return <Loading />;
 
   return (
     <div className="flex flex-col gap-2">
@@ -112,7 +110,7 @@ function VehiclesZones({ register }) {
                 value={vehicle?._id}
                 className="py-1 px-3 cursor-pointer"
               >
-                {vehicle?.year} {vehicle?.brand} {vehicle?.model}
+                {vehicle?.brand} {vehicle?.model}
               </option>
             ))}
           </select>

@@ -4,7 +4,7 @@ import { getAllPricingRulesApi } from '../services/pricingRuleApi';
 export function usePricingRules() {
   const {
     data: pricingRules,
-    isLoading,
+    isLoading: isLoadingPricingRules,
     isError,
     error,
   } = useQuery({
@@ -14,5 +14,10 @@ export function usePricingRules() {
     staleTime: 5 * 60 * 1000,
   });
 
-  return { pricingRules: pricingRules ?? [], isLoading, isError, error };
+  return {
+    pricingRules: pricingRules ?? [],
+    isLoadingPricingRules,
+    isError,
+    error,
+  };
 }
