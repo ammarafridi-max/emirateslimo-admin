@@ -24,12 +24,14 @@ export default function PricingList() {
           { label: 'Pricing', href: '/pricing' },
         ]}
       />
-      <PageHeading className="mb-5 flex gap-6 items-center">
-        <span>Pricing</span>
+
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Pricing</PageHeading>
         <PrimaryLink to="/pricing/create" size="small">
-          Create Rule
+          + Create Rule
         </PrimaryLink>
-      </PageHeading>
+      </div>
+
       <Table $columntemplate="3fr 1fr 1fr 1fr 1fr">
         <Table.Head>
           <Table.Heading>Name</Table.Heading>
@@ -73,8 +75,8 @@ export default function PricingList() {
               ))}
             </Table.Item>
             <Table.Item>
-              <p>One Way: {rule?.pricing?.oneWay}</p>
-              <p>Return: {rule?.pricing?.return}</p>
+              <span className="block">One Way: {rule?.pricing?.oneWay}</span>
+              <span className="block">Return: {rule?.pricing?.return}</span>
             </Table.Item>
           </Table.Row>
         ))}

@@ -15,12 +15,12 @@ export default function Currencies() {
           { label: 'Currencies', href: '/currencies' },
         ]}
       />
-      <PageHeading className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-        <h1 className="text-[26px] font-semibold text-gray-900">Currencies</h1>
-        <PrimaryLink to="/currencies/create" size="small">
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Currencies</PageHeading>
+        <PrimaryLink to="/currencies-rules/create" size="small">
           + Create Currency
         </PrimaryLink>
-      </PageHeading>
+      </div>
     </>
   );
 }

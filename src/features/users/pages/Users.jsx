@@ -36,12 +36,12 @@ export default function Users() {
           { label: 'Users', href: '/users' },
         ]}
       />
-      <PageHeading className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-        <h1 className="text-[26px] font-semibold text-gray-900">Users</h1>
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Users</PageHeading>
         <PrimaryLink to="/users/create" size="small">
           + Create User
         </PrimaryLink>
-      </PageHeading>
+      </div>
 
       <Table $columntemplate="1.5fr_1.5fr_2fr_2fr_1fr_1fr">
         <Table.Head>

@@ -26,14 +26,14 @@ export default function AvailabilityRules() {
           { label: 'Availability Rules', href: '/availability-rules' },
         ]}
       />
-      <PageHeading className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-        <span className="text-[26px] font-semibold text-gray-900">
-          Availability Rules
-        </span>
+
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Availability Rules</PageHeading>
         <PrimaryLink to="/availability-rules/create" size="small">
           + Create Rule
         </PrimaryLink>
-      </PageHeading>
+      </div>
+
       <Table $columntemplate="2fr 3fr 3fr 3fr">
         <Table.Head>
           <Table.Heading>Rule Name</Table.Heading>

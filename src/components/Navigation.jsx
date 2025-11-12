@@ -67,12 +67,6 @@ const links = [
   //   icon: HiOutlineUser,
   //   accessTo: ['admin', 'agent'],
   // },
-  {
-    name: 'Log Out',
-    icon: HiArrowRightOnRectangle,
-    accessTo: ['admin', 'agent'],
-    action: 'logout',
-  },
 ];
 
 function SidebarLink({ name, href, Icon, accessTo, action }) {
@@ -119,9 +113,9 @@ function SidebarLink({ name, href, Icon, accessTo, action }) {
 export default function Navigation() {
   return (
     <aside className="h-full w-full bg-gradient-to-b from-[#0D0D0D] to-[#1A1A1A] flex flex-col justify-between py-6 px-3">
-      <div className="px-6 mb-6">
+      {/* <div className="px-6 mb-6">
         <img src="/logo-dark.png" className="object-contain" />
-      </div>
+      </div> */}
 
       <nav className="flex-1 flex flex-col gap-1 overflow-y-auto scrollbar-hide">
         {links.map((link, i) => (

@@ -30,12 +30,12 @@ export default function Vehicles() {
       />
 
       {/* Page Header */}
-      <PageHeading className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-        <h1 className="text-[26px] font-semibold text-gray-900">Vehicles</h1>
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Vehicles</PageHeading>
         <PrimaryLink to="/vehicles/create" size="small">
           + Create Vehicle
         </PrimaryLink>
-      </PageHeading>
+      </div>
 
       {/* Vehicles Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">

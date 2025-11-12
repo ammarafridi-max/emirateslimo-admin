@@ -5,6 +5,7 @@ import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import Table from '../../../components/Table';
 import { useDeleteBooking } from '../hooks/useDeleteBooking';
+import Filter from '../components/Filter';
 
 export default function Bookings() {
   const { bookings, isLoadingBookings } = useBookings();
@@ -28,10 +29,10 @@ export default function Bookings() {
 
       {/* Page Heading */}
       <PageHeading className="mb-6 flex gap-6 items-center justify-between">
-        <span className="text-[26px] font-semibold text-gray-900">
-          Bookings
-        </span>
+        Bookings
       </PageHeading>
+
+      <Filter />
 
       {/* Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">

@@ -99,9 +99,10 @@ export default function ZoneForm({
 
       if (data.features.length === 1) {
         setPolygon(data.features[0].geometry);
-        const featureId = data.features[0].id;
-        draw.changeMode('direct_select', { featureId });
-        showMidpoints();
+        map.addControl(new mapboxgl.NavigationControl()); // optional zoom buttons
+        map.dragPan.enable();
+        map.scrollZoom.enable();
+        map.touchZoomRotate.enable();
       } else {
         setPolygon({
           type: 'MultiPolygon',

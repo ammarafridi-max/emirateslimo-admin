@@ -30,12 +30,12 @@ export default function Zones() {
       />
 
       {/* Page Header */}
-      <PageHeading className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-        <h1 className="text-[26px] font-semibold text-gray-900">Zones</h1>
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Zones</PageHeading>
         <PrimaryLink to="/zones/create" size="small">
           + Create Zone
         </PrimaryLink>
-      </PageHeading>
+      </div>
 
       {/* Zones Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">

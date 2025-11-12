@@ -1,5 +1,6 @@
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { useUser } from '../features/users/hooks/useUser';
 
 const cookies = new Cookies();
 const jwtCookie = cookies.get('jwt');

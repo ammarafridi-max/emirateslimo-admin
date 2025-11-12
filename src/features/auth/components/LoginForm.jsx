@@ -9,14 +9,14 @@ import Label from '../../../components/FormElements/Label';
 export default function LoginForm() {
   const navigate = useNavigate();
   const { login, isLoggingIn } = useLogin();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const cookie = new Cookies();
   const jwtCookie = cookie.get('jwt');
 
   function handleSubmit(e) {
     e.preventDefault();
-    login({ username, password });
+    login({ email, password });
   }
 
   useEffect(() => {
@@ -38,13 +38,13 @@ export default function LoginForm() {
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label className="text-gray-200">Username</Label>
+              <Label className="text-gray-200">email</Label>
               <Input
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoggingIn}
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 className="mt-1 bg-white/10 text-white placeholder-gray-400 border-gray-500 focus:border-[#FF6B00] focus:ring-[#FF6B00]"
               />
             </div>

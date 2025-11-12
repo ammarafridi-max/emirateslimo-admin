@@ -10,7 +10,7 @@ export function useLogin() {
   const navigate = useNavigate();
   const { mutate: login, isPending: isLoggingIn } = useMutation({
     mutationFn: (credentials) => {
-      if (credentials.username && credentials.password) {
+      if (credentials.email && credentials.password) {
         return loginApi(credentials);
       } else {
         throw new Error('Invalid or missing credentials');
