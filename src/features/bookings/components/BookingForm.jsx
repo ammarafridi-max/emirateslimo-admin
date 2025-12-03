@@ -47,7 +47,7 @@ export default function BookingForm() {
             type="button"
             className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${
               activeTab === item
-                ? 'bg-primary-600 text-white'
+                ? 'bg-primary-900 text-white'
                 : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
             }`}
           >
