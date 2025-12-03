@@ -1,36 +1,26 @@
 import { useMutation } from '@tanstack/react-query';
 import { loginApi } from '../services/authApi';
-import toast from 'react-hot-toast';
-import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
-
-const cookies = new Cookies();
+import { useAuth } from '../../../context/AuthContext';
+import toast from 'react-hot-toast';
 
 export function useLogin() {
   const navigate = useNavigate();
+  const { setUser, refreshUser } = useAuth();
+
   const { mutate: login, isPending: isLoggingIn } = useMutation({
-    mutationFn: (credentials) => {
-      if (credentials.email && credentials.password) {
-        return loginApi(credentials);
-      } else {
-        throw new Error('Invalid or missing credentials');
-      }
+    mutationFn: loginApi,
+    onSuccess: async (user) => {
+      toast.success('Welcome back!');
+
+      setUser(user);
+
+      refreshUser();
+
+      navigate('/');
     },
-    onSuccess: (res) => {
-      if (res?.token) {
-        cookies.set('jwt', res.token, {
-          path: '/',
-          secure: true,
-          sameSite: 'strict',
-        });
-        toast.success('Login successful');
-        navigate('/');
-      } else {
-        throw new Error('Invalid or missing credentials');
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (err) => {
+      toast.error(err.message || 'Invalid credentials');
     },
   });
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLogin } from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'universal-cookie';
+import { useAuth } from '../../../context/AuthContext';
 import PrimaryButton from '../../../components/PrimaryButton';
 import Input from '../../../components/FormElements/Input';
 import Label from '../../../components/FormElements/Label';
@@ -9,10 +9,9 @@ import Label from '../../../components/FormElements/Label';
 export default function LoginForm() {
   const navigate = useNavigate();
   const { login, isLoggingIn } = useLogin();
+  const { user } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const cookie = new Cookies();
-  const jwtCookie = cookie.get('jwt');
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -20,8 +19,11 @@ export default function LoginForm() {
   }
 
   useEffect(() => {
-    if (jwtCookie) navigate('/');
-  }, [jwtCookie]);
+    console.log(user);
+    if (user) {
+      navigate('/');
+    }
+  }, [user]);
 
   return (
     <>

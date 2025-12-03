@@ -1,10 +1,12 @@
-import Cookies from 'universal-cookie';
+import { BACKEND } from '../../../config';
 
 export function useLogout() {
-  const cookies = new Cookies();
+  async function logout() {
+    await fetch(`${BACKEND}/api/auth/logout`, {
+      method: 'GET',
+      credentials: 'include',
+    });
 
-  function logout() {
-    cookies.remove('jwt', { path: '/' });
     window.location.href = '/login';
   }
 

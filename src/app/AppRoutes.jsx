@@ -7,6 +7,8 @@ import AppLayout from '../layouts/AppLayout';
 import Dashboard from '../pages/Dashboard';
 import Login from '../features/auth/pages/Login';
 import PrivateRoutes from '../pages/PrivateRoutes';
+import ProtectedRoute from '../pages/ProtectedRoute';
+import AdminRoute from '../pages/AdminRoute';
 import NotFound from '../pages/NotFound';
 
 // Zones
@@ -42,7 +44,7 @@ import UpdateCurrency from '../features/currencies/pages/UpdateCurrency';
 import Users from '../features/users/pages/Users';
 import CreateUser from '../features/users/pages/CreateUser';
 import UpdateUser from '../features/users/pages/UpdateUser';
-import MyAccount from '../features/account/MyAccount';
+import MyAccount from '../features/account/pages/MyAccount';
 
 export default function AppRoutes() {
   return (
@@ -50,7 +52,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<PrivateRoutes />}>
+        <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
