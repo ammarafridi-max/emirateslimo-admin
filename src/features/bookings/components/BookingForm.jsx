@@ -8,6 +8,7 @@ import Input from '../../../components/FormElements/Input';
 import Label from '../../../components/FormElements/Label';
 import Loading from '../../../components/Loading';
 import PrimaryButton from '../../../components/PrimaryButton';
+import { capitalCase } from 'change-case';
 
 export default function BookingForm() {
   const { id } = useParams();
@@ -17,7 +18,8 @@ export default function BookingForm() {
   if (isLoadingBooking) return <Loading />;
   if (!booking) return <p>No booking found.</p>;
 
-  const { pickup, dropoff, bookingDetails, orderSummary, vehicle } = booking;
+  const { pickup, dropoff, bookingDetails, orderSummary, vehicle, payment } =
+    booking;
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function BookingForm() {
             className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${
               activeTab === item
                 ? 'bg-primary-900 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                : 'bg-primary-900/10 text-black hover:bg-primary-900/20'
             }`}
           >
             {item === 'booking' && 'Booking Info'}
@@ -64,6 +66,7 @@ export default function BookingForm() {
         {activeTab === 'passenger' && (
           <PassengerPaymentTab
             bookingDetails={bookingDetails}
+            payment={payment}
             orderSummary={orderSummary}
           />
         )}
@@ -89,7 +92,11 @@ function BookingInfoTab({ booking }) {
       </FormRow>
       <FormRow>
         <Label>Trip Type</Label>
-        <Input className="col-span-3" value={booking.tripType} disabled />
+        <Input
+          className="col-span-3"
+          value={capitalCase(booking.tripType)}
+          disabled
+        />
       </FormRow>
       <FormRow>
         <Label>Pickup Date</Label>
@@ -112,7 +119,7 @@ function BookingInfoTab({ booking }) {
 }
 
 /* ---------- TAB 2 ---------- */
-function PassengerPaymentTab({ bookingDetails, orderSummary }) {
+function PassengerPaymentTab({ bookingDetails, orderSummary, payment }) {
   return (
     <div className="flex flex-col gap-4">
       <FormRow>
@@ -132,7 +139,7 @@ function PassengerPaymentTab({ bookingDetails, orderSummary }) {
         <Label>Phone</Label>
         <Input
           className="col-span-3"
-          value={bookingDetails.phoneNumber}
+          value={`${bookingDetails.phoneNumber.code}-${bookingDetails.phoneNumber.number}`}
           disabled
         />
       </FormRow>
@@ -167,7 +174,7 @@ function PassengerPaymentTab({ bookingDetails, orderSummary }) {
         <Label>Payment Method</Label>
         <Input
           className="col-span-3"
-          value={bookingDetails.payment.method.toUpperCase()}
+          value={capitalCase(payment.method)}
           disabled
         />
       </FormRow>
@@ -175,7 +182,7 @@ function PassengerPaymentTab({ bookingDetails, orderSummary }) {
         <Label>Payment Status</Label>
         <Input
           className="col-span-3"
-          value={bookingDetails.payment.status}
+          value={capitalCase(payment.status)}
           disabled
         />
       </FormRow>
@@ -183,7 +190,7 @@ function PassengerPaymentTab({ bookingDetails, orderSummary }) {
         <Label>Transaction ID</Label>
         <Input
           className="col-span-3"
-          value={bookingDetails.payment.transactionId || '-'}
+          value={payment.transactionId || '-'}
           disabled
         />
       </FormRow>
@@ -191,7 +198,15 @@ function PassengerPaymentTab({ bookingDetails, orderSummary }) {
         <Label>Total Amount</Label>
         <Input
           className="col-span-3"
-          value={`${orderSummary.total} ${orderSummary.currency.toUpperCase()}`}
+          value={`${orderSummary.currency.toUpperCase()} ${orderSummary.total}`}
+          disabled
+        />
+      </FormRow>
+      <FormRow>
+        <Label>Amount Paid</Label>
+        <Input
+          className="col-span-3"
+          value={`${payment.currency.toUpperCase()} ${payment.amount}`}
           disabled
         />
       </FormRow>
@@ -207,13 +222,13 @@ function VehicleZonesTab({ vehicle, pickup, dropoff }) {
         <Label>Vehicle</Label>
         <Input
           className="col-span-3"
-          value={`${vehicle.brand} ${vehicle.model} (${vehicle.class} ${vehicle.type})`}
+          value={`${vehicle.brand} ${vehicle.model}`}
           disabled
         />
       </FormRow>
 
       <FormRow>
-        <Label>Pickup</Label>
+        <Label>Pickup Address</Label>
         <Input
           className="col-span-3"
           value={`${pickup.name} - ${pickup.address}` || '-'}
@@ -231,7 +246,7 @@ function VehicleZonesTab({ vehicle, pickup, dropoff }) {
       </FormRow>
 
       <FormRow>
-        <Label>Dropoff</Label>
+        <Label>Dropoff Address</Label>
         <Input
           className="col-span-3"
           value={`${dropoff.name} - ${dropoff.address}` || '-'}

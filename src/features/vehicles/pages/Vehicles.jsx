@@ -38,106 +38,103 @@ export default function Vehicles() {
       </div>
 
       {/* Vehicles Table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        {vehicles?.length > 0 ? (
-          <Table $columntemplate="4fr_2fr_4fr">
-            <Table.Head>
-              <Table.Heading>Vehicle</Table.Heading>
-              <Table.Heading>Pricing</Table.Heading>
-              <Table.Heading textAlign="right">Actions</Table.Heading>
-            </Table.Head>
+      {vehicles?.length > 0 ? (
+        <Table $columntemplate="4fr_2fr_4fr">
+          <Table.Head>
+            <Table.Heading>Vehicle</Table.Heading>
+            <Table.Heading>Pricing</Table.Heading>
+            <Table.Heading textAlign="right">Actions</Table.Heading>
+          </Table.Head>
 
-            {vehicles.map((vehicle) => (
-              <Table.Row key={vehicle._id} href={`/vehicles/${vehicle._id}`}>
-                {/* Vehicle Info */}
-                <Table.Item textTransform="capitalize">
-                  <div className="font-medium text-gray-900">
-                    {vehicle?.brand} {vehicle?.model}
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-[13px] text-gray-500 mt-0.5">
-                    {vehicle?.type && (
-                      <span className="bg-gray-100 px-2 py-0.5 rounded-md">
-                        {vehicle.type}
-                      </span>
-                    )}
-                    {vehicle?.class && (
-                      <span className="bg-gray-100 px-2 py-0.5 rounded-md">
-                        {vehicle.class}
-                      </span>
-                    )}
-                    {vehicle?.passengers && (
-                      <span className="bg-gray-100 px-2 py-0.5 rounded-md">
-                        {vehicle.passengers} Passengers
-                      </span>
-                    )}
-                    {vehicle?.luggage && (
-                      <span className="bg-gray-100 px-2 py-0.5 rounded-md">
-                        {vehicle.luggage} Luggage
-                      </span>
-                    )}
-                  </div>
-                </Table.Item>
+          {vehicles.map((vehicle) => (
+            <Table.Row key={vehicle._id} href={`/vehicles/${vehicle._id}`}>
+              <Table.Item textTransform="capitalize">
+                <div className="font-medium text-gray-900">
+                  {vehicle?.brand} {vehicle?.model}
+                </div>
+                <div className="flex flex-wrap gap-2 text-[13px] text-gray-500 mt-0.5">
+                  {vehicle?.type && (
+                    <span className="bg-gray-100 px-2 py-0.5 rounded-md">
+                      {vehicle.type}
+                    </span>
+                  )}
+                  {vehicle?.class && (
+                    <span className="bg-gray-100 px-2 py-0.5 rounded-md">
+                      {vehicle.class}
+                    </span>
+                  )}
+                  {vehicle?.passengers && (
+                    <span className="bg-gray-100 px-2 py-0.5 rounded-md">
+                      {vehicle.passengers} Passengers
+                    </span>
+                  )}
+                  {vehicle?.luggage && (
+                    <span className="bg-gray-100 px-2 py-0.5 rounded-md">
+                      {vehicle.luggage} Luggage
+                    </span>
+                  )}
+                </div>
+              </Table.Item>
 
-                {/* Pricing */}
-                <Table.Item>
-                  <div className="space-y-1 text-[14px]">
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Starting:</span>
-                      <span className="font-medium text-gray-800">
-                        AED {vehicle?.pricing?.initialPrice || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Per Hour:</span>
-                      <span className="font-medium text-gray-800">
-                        AED {vehicle?.pricing?.pricePerHour || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Per KM:</span>
-                      <span className="font-medium text-gray-800">
-                        AED {vehicle?.pricing?.pricePerKm || 0}
-                      </span>
-                    </div>
+              {/* Pricing */}
+              <Table.Item>
+                <div className="space-y-1 text-[14px]">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Starting:</span>
+                    <span className="font-medium text-gray-800">
+                      AED {vehicle?.pricing?.initialPrice || 0}
+                    </span>
                   </div>
-                </Table.Item>
-
-                {/* Actions */}
-                <Table.Item textAlign="right">
-                  <div className="flex justify-end gap-3">
-                    <Table.DuplicateLink
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        duplicateVehicle(vehicle._id);
-                      }}
-                    />
-                    <Table.DeleteLink
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteVehicle(vehicle._id);
-                      }}
-                    />
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Per Hour:</span>
+                    <span className="font-medium text-gray-800">
+                      AED {vehicle?.pricing?.pricePerHour || 0}
+                    </span>
                   </div>
-                </Table.Item>
-              </Table.Row>
-            ))}
-          </Table>
-        ) : (
-          <div className="text-center py-12 text-gray-500 text-sm">
-            No vehicles added yet.
-          </div>
-        )}
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Per KM:</span>
+                    <span className="font-medium text-gray-800">
+                      AED {vehicle?.pricing?.pricePerKm || 0}
+                    </span>
+                  </div>
+                </div>
+              </Table.Item>
 
-        {(isDuplicatingVehicle || isDeletingVehicle) && (
-          <div className="text-center text-sm text-gray-500 py-2 border-t border-gray-100">
-            {isDuplicatingVehicle
-              ? 'Duplicating vehicle...'
-              : isDeletingVehicle
-                ? 'Deleting vehicle...'
-                : ''}
-          </div>
-        )}
-      </div>
+              {/* Actions */}
+              <Table.Item textAlign="right">
+                <div className="flex justify-end gap-3">
+                  <Table.DuplicateLink
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      duplicateVehicle(vehicle._id);
+                    }}
+                  />
+                  <Table.DeleteLink
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteVehicle(vehicle._id);
+                    }}
+                  />
+                </div>
+              </Table.Item>
+            </Table.Row>
+          ))}
+        </Table>
+      ) : (
+        <div className="text-center py-12 text-gray-500 text-sm">
+          No vehicles added yet.
+        </div>
+      )}
+
+      {(isDuplicatingVehicle || isDeletingVehicle) && (
+        <div className="text-center text-sm text-gray-500 py-2 border-t border-gray-100">
+          {isDuplicatingVehicle
+            ? 'Duplicating vehicle...'
+            : isDeletingVehicle
+              ? 'Deleting vehicle...'
+              : ''}
+        </div>
+      )}
     </>
   );
 }

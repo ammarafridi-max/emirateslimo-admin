@@ -1,53 +1,35 @@
-import { baseURL } from '../../../utils/baseUrl';
-import { apiFetch, apiUpload } from '../../../utils/apiClient';
+import { apiFetch } from '../../../utils/apiClient';
+
+const URL = '/api/zones';
 
 export async function getZonesApi() {
-  return apiFetch('/api/zones');
+  return apiFetch(URL);
 }
 
 export async function createZoneApi(zoneData) {
-  const res = await fetch(`${baseURL}/api/zones`, {
+  return apiFetch(URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(zoneData),
   });
-
-  if (!res.ok) throw new Error('Could not create zone');
-
-  const data = await res.json();
-  return data?.data?.zone;
 }
 
 export async function updateZoneApi(id, zoneData) {
-  const res = await fetch(`${baseURL}/api/zones/${id}`, {
+  return apiFetch(`${URL}/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(zoneData),
   });
-
-  if (!res.ok) throw new Error('Could not update zone');
-
-  const data = await res.json();
-  return data?.data?.zone;
 }
 
 export async function deleteZoneApi(id) {
-  const res = await fetch(`${baseURL}/api/zones/${id}`, {
+  return apiFetch(`${URL}/${id}`, {
     method: 'DELETE',
   });
-
-  if (!res.ok) throw new Error('Could not delete zone');
-
-  return true;
 }
 
 export async function duplicateZoneApi(id) {
-  const res = await fetch(`${baseURL}/api/zones/${id}/duplicate`, {
+  return apiFetch(`${URL}/${id}/duplicate`, {
     method: 'POST',
   });
-
-  if (!res.ok) throw new Error('Could not duplicate zone');
-
-  const data = await res.json();
-  return data?.data?.zone;
 }

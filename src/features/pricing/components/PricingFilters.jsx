@@ -24,7 +24,7 @@ export default function PricingFilters() {
 
   return (
     <div className="flex justify-between mb-5">
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <FilterTemplate
           id="vehicleId"
           title="Vehicle"
