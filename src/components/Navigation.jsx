@@ -2,15 +2,12 @@ import {
   HiOutlineUsers,
   HiOutlineTicket,
   HiOutlineHome,
-  HiOutlineUser,
-  HiArrowRightOnRectangle,
   HiOutlineMap,
   HiOutlineCalendar,
   HiOutlineCurrencyDollar,
 } from 'react-icons/hi2';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useLogout } from '../features/auth/hooks/useLogout';
-import { useJwtData } from '../services/jwt';
+import { useAuth } from '../context/AuthContext';
 
 const links = [
   {
@@ -69,13 +66,11 @@ const links = [
   // },
 ];
 
-function SidebarLink({ name, href, Icon, accessTo, action }) {
-  const jwtData = useJwtData();
+function SidebarLink({ name, href, Icon, action }) {
   const { pathname } = useLocation();
-  const { logout } = useLogout();
+  const { logout } = useAuth();
 
   const isActive = href && pathname.startsWith(href);
-  const isAllowed = jwtData && accessTo?.includes(jwtData?.role);
 
   if (action === 'logout') {
     return (
