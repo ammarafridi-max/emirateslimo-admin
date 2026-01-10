@@ -34,6 +34,7 @@ import UpdateAvailabilityRule from '../features/availability-rules/pages/UpdateA
 // Bookings
 import Bookings from '../features/bookings/pages/Bookings';
 import UpdateBooking from '../features/bookings/pages/UpdateBooking';
+import BookingsCalendar from '../features/bookings/pages/BookingsCalendar';
 
 // Currencies
 import Currencies from '../features/currencies/pages/Currencies';
@@ -67,15 +68,10 @@ export default function AppRoutes() {
             <Route path="pricing/create" element={<CreatePricing />} />
             <Route path="pricing/:id" element={<UpdatePricing />} />
             <Route path="availability-rules" element={<AvailabilityRules />} />
-            <Route
-              path="availability-rules/create"
-              element={<CreateAvailabilityRule />}
-            />
-            <Route
-              path="availability-rules/:id"
-              element={<UpdateAvailabilityRule />}
-            />
+            <Route path="availability-rules/create" element={<CreateAvailabilityRule />} />
+            <Route path="availability-rules/:id" element={<UpdateAvailabilityRule />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="bookings/calendar" element={<BookingsCalendar />} />
             <Route path="bookings/:id" element={<UpdateBooking />} />
             <Route path="currencies" element={<Currencies />} />
             <Route path="currencies/create" element={<CreateCurrency />} />
