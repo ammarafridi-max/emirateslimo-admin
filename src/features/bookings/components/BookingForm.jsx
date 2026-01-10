@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useBooking } from '../hooks/useBooking';
+import { capitalCase } from 'change-case';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import Input from '../../../components/FormElements/Input';
 import Label from '../../../components/FormElements/Label';
 import Loading from '../../../components/Loading';
 import PrimaryButton from '../../../components/PrimaryButton';
-import { capitalCase } from 'change-case';
 
 export default function BookingForm() {
   const { id } = useParams();
@@ -18,8 +18,7 @@ export default function BookingForm() {
   if (isLoadingBooking) return <Loading />;
   if (!booking) return <p>No booking found.</p>;
 
-  const { pickup, dropoff, bookingDetails, orderSummary, vehicle, payment } =
-    booking;
+  const { pickup, dropoff, bookingDetails, orderSummary, vehicle, payment, hoursBooked } = booking;
 
   return (
     <>
@@ -37,10 +36,36 @@ export default function BookingForm() {
 
       <PageHeading className="mb-5 flex justify-between items-center">
         <span>Booking #{booking.bookingRef}</span>
-        <PrimaryButton size="small">Edit Booking</PrimaryButton>
+        <PrimaryButton
+          size="small"
+          onClick={() => {
+            const message = `
+Pickup date: ${new Date(booking.pickupDate).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
+Pickup time: ${booking.pickupTime}
+Vehicle: ${vehicle.brand} ${vehicle.model}
+
+Pickup location: ${pickup.name} - ${pickup.address}
+Dropoff location: ${dropoff.name} - ${dropoff.address}
+
+Passenger name: ${bookingDetails.firstName} ${bookingDetails.lastName}
+Passenger number: ${bookingDetails.phoneNumber.code}-${bookingDetails.phoneNumber.number}
+
+Flight number: ${bookingDetails.flightNumber || 'NA'}
+Estimated arrival: ${bookingDetails.arrivalTime || 'NA'}
+*Message:* ${bookingDetails.message || 'NA'}
+    `.trim();
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+          }}
+        >
+          Share on WhatsApp
+        </PrimaryButton>
       </PageHeading>
 
-      {/* Tabs */}
       <div className="flex gap-2 text-sm mb-5">
         {['booking', 'passenger', 'vehicle'].map((item) => (
           <button
@@ -48,9 +73,7 @@ export default function BookingForm() {
             onClick={() => setActiveTab(item)}
             type="button"
             className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${
-              activeTab === item
-                ? 'bg-primary-900 text-white'
-                : 'bg-primary-900/10 text-black hover:bg-primary-900/20'
+              activeTab === item ? 'bg-primary-900 text-white' : 'bg-primary-900/10 text-black hover:bg-primary-900/20'
             }`}
           >
             {item === 'booking' && 'Booking Info'}
@@ -60,22 +83,13 @@ export default function BookingForm() {
         ))}
       </div>
 
-      {/* Tab content container */}
       <div className="min-h-[450px] bg-white p-7 rounded-xl shadow-lg overflow-scroll">
         {activeTab === 'booking' && <BookingInfoTab booking={booking} />}
         {activeTab === 'passenger' && (
-          <PassengerPaymentTab
-            bookingDetails={bookingDetails}
-            payment={payment}
-            orderSummary={orderSummary}
-          />
+          <PassengerPaymentTab bookingDetails={bookingDetails} payment={payment} orderSummary={orderSummary} />
         )}
         {activeTab === 'vehicle' && (
-          <VehicleZonesTab
-            vehicle={vehicle}
-            pickup={pickup}
-            dropoff={dropoff}
-          />
+          <VehicleZonesTab vehicle={vehicle} pickup={pickup} dropoff={dropoff} hoursBooked={hoursBooked} />
         )}
       </div>
     </>
@@ -92,11 +106,7 @@ function BookingInfoTab({ booking }) {
       </FormRow>
       <FormRow>
         <Label>Trip Type</Label>
-        <Input
-          className="col-span-3"
-          value={capitalCase(booking.tripType)}
-          disabled
-        />
+        <Input className="col-span-3" value={capitalCase(booking.tripType)} disabled />
       </FormRow>
       <FormRow>
         <Label>Pickup Date</Label>
@@ -108,11 +118,7 @@ function BookingInfoTab({ booking }) {
       </FormRow>
       <FormRow>
         <Label>Created At</Label>
-        <Input
-          className="col-span-3"
-          value={new Date(booking.createdAt).toLocaleString()}
-          disabled
-        />
+        <Input className="col-span-3" value={new Date(booking.createdAt).toLocaleString()} disabled />
       </FormRow>
     </div>
   );
@@ -124,11 +130,7 @@ function PassengerPaymentTab({ bookingDetails, orderSummary, payment }) {
     <div className="flex flex-col gap-4">
       <FormRow>
         <Label>Passenger Name</Label>
-        <Input
-          className="col-span-3"
-          value={`${bookingDetails.firstName} ${bookingDetails.lastName}`}
-          disabled
-        />
+        <Input className="col-span-3" value={`${bookingDetails.firstName} ${bookingDetails.lastName}`} disabled />
       </FormRow>
       <FormRow>
         <Label>Email</Label>
@@ -145,123 +147,81 @@ function PassengerPaymentTab({ bookingDetails, orderSummary, payment }) {
       </FormRow>
       <FormRow>
         <Label>Flight Number</Label>
-        <Input
-          className="col-span-3"
-          value={bookingDetails.flightNumber || '-'}
-          disabled
-        />
+        <Input className="col-span-3" value={bookingDetails.flightNumber || '-'} disabled />
       </FormRow>
 
       <FormRow>
         <Label>Arrival Time</Label>
-        <Input
-          className="col-span-3"
-          value={bookingDetails.arrivalTime || '-'}
-          disabled
-        />
+        <Input className="col-span-3" value={bookingDetails.arrivalTime || '-'} disabled />
       </FormRow>
       <FormRow>
         <Label>Message</Label>
-        <Input
-          className="col-span-3"
-          value={bookingDetails.message || '-'}
-          disabled
-        />
+        <Input className="col-span-3" value={bookingDetails.message || '-'} disabled />
       </FormRow>
 
-      {/* Payment Info */}
       <FormRow>
         <Label>Payment Method</Label>
-        <Input
-          className="col-span-3"
-          value={capitalCase(payment.method)}
-          disabled
-        />
+        <Input className="col-span-3" value={capitalCase(payment.method)} disabled />
       </FormRow>
       <FormRow>
         <Label>Payment Status</Label>
-        <Input
-          className="col-span-3"
-          value={capitalCase(payment.status)}
-          disabled
-        />
+        <Input className="col-span-3" value={capitalCase(payment.status)} disabled />
       </FormRow>
       <FormRow>
         <Label>Transaction ID</Label>
-        <Input
-          className="col-span-3"
-          value={payment.transactionId || '-'}
-          disabled
-        />
+        <Input className="col-span-3" value={payment.transactionId || '-'} disabled />
       </FormRow>
       <FormRow>
         <Label>Total Amount</Label>
-        <Input
-          className="col-span-3"
-          value={`${orderSummary.currency.toUpperCase()} ${orderSummary.total}`}
-          disabled
-        />
+        <Input className="col-span-3" value={`${orderSummary.currency.toUpperCase()} ${orderSummary.total}`} disabled />
       </FormRow>
       <FormRow>
         <Label>Amount Paid</Label>
-        <Input
-          className="col-span-3"
-          value={`${payment.currency.toUpperCase()} ${payment.amount}`}
-          disabled
-        />
+        <Input className="col-span-3" value={`${payment.currency.toUpperCase()} ${payment.amount}`} disabled />
       </FormRow>
     </div>
   );
 }
 
 /* ---------- TAB 3 ---------- */
-function VehicleZonesTab({ vehicle, pickup, dropoff }) {
+function VehicleZonesTab({ vehicle, pickup, dropoff, hoursBooked }) {
   return (
     <div className="flex flex-col gap-4">
       <FormRow>
         <Label>Vehicle</Label>
-        <Input
-          className="col-span-3"
-          value={`${vehicle.brand} ${vehicle.model}`}
-          disabled
-        />
+        <Input className="col-span-3" value={`${vehicle.brand} ${vehicle.model}`} disabled />
       </FormRow>
 
       <FormRow>
         <Label>Pickup Address</Label>
-        <Input
-          className="col-span-3"
-          value={`${pickup.name} - ${pickup.address}` || '-'}
-          disabled
-        />
+        <Input className="col-span-3" value={`${pickup.name} - ${pickup.address}` || '-'} disabled />
       </FormRow>
 
       <FormRow>
         <Label>Pickup Zone</Label>
-        <Input
-          className="col-span-3"
-          value={`${pickup?.zone?.name}` || '-'}
-          disabled
-        />
+        <Input className="col-span-3" value={`${pickup?.zone?.name}` || '-'} disabled />
       </FormRow>
 
-      <FormRow>
-        <Label>Dropoff Address</Label>
-        <Input
-          className="col-span-3"
-          value={`${dropoff.name} - ${dropoff.address}` || '-'}
-          disabled
-        />
-      </FormRow>
+      {hoursBooked && (
+        <FormRow>
+          <Label>Hours Booked</Label>
+          <Input className="col-span-3" value={hoursBooked} disabled />
+        </FormRow>
+      )}
 
-      <FormRow>
-        <Label>Dropoff Zone</Label>
-        <Input
-          className="col-span-3"
-          value={`${dropoff?.zone?.name}` || '-'}
-          disabled
-        />
-      </FormRow>
+      {dropoff.name && (
+        <>
+          <FormRow>
+            <Label>Dropoff Address</Label>
+            <Input className="col-span-3" value={`${dropoff.name} - ${dropoff.address}` || '-'} disabled />
+          </FormRow>
+
+          <FormRow>
+            <Label>Dropoff Zone</Label>
+            <Input className="col-span-3" value={`${dropoff?.zone?.name}` || '-'} disabled />
+          </FormRow>
+        </>
+      )}
     </div>
   );
 }
