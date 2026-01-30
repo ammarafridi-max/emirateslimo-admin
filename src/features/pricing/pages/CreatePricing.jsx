@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useCreatePricingRule } from '../hooks/useCreatePricingRule';
 import PricingForm from '../components/PricingForm';
 import Breadcrumb from '../../../components/Breadcrumb';
+import PageHeading from '../../../components/PageHeading';
 
 export default function CreatePricing() {
   const { createPricingRule } = useCreatePricingRule();
@@ -24,6 +25,7 @@ export default function CreatePricing() {
           { label: 'Create Pricing Rule', href: '/pricing/create' },
         ]}
       />
+      <PageHeading className="mb-5">Create Pricing Rule</PageHeading>
       <PricingForm onSubmit={handleSubmit(onSubmit)} register={register} />
     </>
   );

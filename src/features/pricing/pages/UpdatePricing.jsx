@@ -6,6 +6,7 @@ import { useUpdatePricingRule } from '../hooks/useUpdatePricingRule';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PricingForm from '../components/PricingForm';
+import PageHeading from '../../../components/PageHeading';
 
 export default function UpdatePricing() {
   const { id } = useParams();
@@ -38,9 +39,10 @@ export default function UpdatePricing() {
         paths={[
           { label: 'Home', href: '/' },
           { label: 'Pricing', href: '/pricing' },
-          { label: 'Update Pricing Rule', href: '/pricing/create' },
+          { label: 'Update Pricing Rule', href: `/pricing/${id}` },
         ]}
       />
+      <PageHeading className="mb-5">Update Pricing Rule</PageHeading>
       <PricingForm onSubmit={handleSubmit(onSubmit)} register={register} />
     </>
   );
