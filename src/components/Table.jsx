@@ -5,9 +5,7 @@ const TableContext = createContext();
 function Table({ children, $columntemplate }) {
   return (
     <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-      <TableContext.Provider value={{ $columntemplate }}>
-        {children}
-      </TableContext.Provider>
+      <TableContext.Provider value={{ $columntemplate }}>{children}</TableContext.Provider>
     </div>
   );
 }
@@ -25,17 +23,8 @@ function Head({ children }) {
 }
 
 function Heading({ children, textAlign = 'left' }) {
-  const alignClass =
-    textAlign === 'center'
-      ? 'text-center'
-      : textAlign === 'right'
-        ? 'text-right'
-        : 'text-left';
-  return (
-    <p className={`tracking-wide ${alignClass} text-[14px] uppercase`}>
-      {children}
-    </p>
-  );
+  const alignClass = textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
+  return <p className={`tracking-wide ${alignClass} text-[14px] uppercase`}>{children}</p>;
 }
 
 function Row({ children, onClick, href }) {
@@ -55,35 +44,17 @@ function Row({ children, onClick, href }) {
 }
 
 function Item({ children, textAlign = 'left', textTransform = 'none' }) {
-  const alignClass =
-    textAlign === 'center'
-      ? 'text-center'
-      : textAlign === 'right'
-        ? 'text-right'
-        : 'text-left';
-  return (
-    <p
-      className={`text-[15px] text-gray-700 ${alignClass} ${textTransform} flex flex-col`}
-    >
-      {children}
-    </p>
-  );
+  const alignClass = textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
+  return <p className={`text-[15px] text-gray-700 ${alignClass} ${textTransform} flex flex-col`}>{children}</p>;
 }
 
 function Footer({ children }) {
-  return (
-    <div className="bg-gray-50 text-gray-600 text-[14px] py-3 px-6 border-t border-gray-200">
-      {children}
-    </div>
-  );
+  return <div className="bg-gray-50 text-gray-600 text-[14px] py-3 px-6 border-t border-gray-200">{children}</div>;
 }
 
 function Link({ href, children }) {
   return (
-    <a
-      href={href}
-      className="text-black hover:underline font-extralight cursor-pointer transition-colors"
-    >
+    <a href={href} className="text-black hover:underline font-extralight cursor-pointer transition-colors">
       {children}
     </a>
   );
@@ -123,7 +94,6 @@ function DuplicateLink({ onClick, isDuplicating }) {
   );
 }
 
-// Attach subcomponents
 Table.Head = Head;
 Table.Heading = Heading;
 Table.Row = Row;
