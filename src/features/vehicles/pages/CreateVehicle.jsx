@@ -56,7 +56,7 @@ export default function CreateVehicle() {
           { label: 'Create Vehicle', href: '/vehicles/create' },
         ]}
       />
-      <PageHeading>Create Vehicle</PageHeading>
+      <PageHeading className="mb-5">Create Vehicle</PageHeading>
       <VehicleForm
         register={register}
         onSubmit={handleSubmit(onSubmit)}
