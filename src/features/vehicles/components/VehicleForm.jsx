@@ -23,20 +23,19 @@ export default function VehicleForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      {/* --- Tabs --- */}
-      <div className="flex gap-3">
-        {tabs.map((tab) => (
+      <div className="flex gap-2 text-sm mb-5">
+        {tabs.map((item) => (
           <button
-            key={tab.key}
+            key={item}
+            onClick={() => setActiveTab(item?.key)}
             type="button"
-            onClick={() => setActiveTab(tab.key)}
-            className={`relative py-2 px-4 text-sm font-medium transition-all duration-300 rounded-t-md ${
-              activeTab === tab.key
-                ? 'text-[#FF6B00] border-b-2 border-[#FF6B00]'
-                : 'text-gray-600 hover:text-black hover:bg-gray-100'
+            className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${
+              activeTab === item?.key
+                ? 'bg-primary-900 text-white'
+                : 'bg-primary-900/10 text-black hover:bg-primary-900/20'
             }`}
           >
-            {tab.name}
+            {item?.name}
           </button>
         ))}
       </div>
@@ -64,9 +63,6 @@ export default function VehicleForm({
   );
 }
 
-/* --------------------------
-   Vehicle Information Section
---------------------------- */
 function VehicleInformation({ register }) {
   const fields = [
     ['Brand Name', 'brand', 'text'],
@@ -112,9 +108,6 @@ function VehicleInformation({ register }) {
   );
 }
 
-/* --------------------------
-   Vehicle Pricing Section
---------------------------- */
 function VehiclePricing({ register }) {
   const fields = [
     ['Initial Price', 'initialPrice'],
@@ -134,9 +127,6 @@ function VehiclePricing({ register }) {
   );
 }
 
-/* --------------------------
-   Images Section
---------------------------- */
 function Images({ register, vehicle }) {
   const { deleteImage, isDeleting } = useDeleteImage();
   const hasImages = vehicle?.featuredImage || vehicle?.images?.length > 0;
