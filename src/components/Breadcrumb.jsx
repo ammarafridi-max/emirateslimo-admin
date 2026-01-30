@@ -1,19 +1,20 @@
+import { HiChevronRight } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react'; // or any icon lib you like
 
 export default function Breadcrumb({ paths = [] }) {
   return (
-    <nav className="flex items-center text-sm text-gray-400 gap-2">
+    <nav className="flex items-center text-sm text-gray-400 gap-2 py-1">
       {paths.map((path, index) => (
         <div key={index} className="flex items-center gap-2">
-          {index !== 0 && <ChevronRight className="text-gray-400" />}
+          {index !== 0 && (
+            <span>
+              <HiChevronRight />
+            </span>
+          )}
           {index === paths.length - 1 ? (
-            <span className="font-normal text-gray-900">{path.label}</span>
+            <span className="font-light text-gray-900">{path.label}</span>
           ) : (
-            <Link
-              to={path.href}
-              className="hover:text-primary-600 transition-colors"
-            >
+            <Link to={path.href} className="font-light hover:text-primary-600 transition-colors">
               {path.label}
             </Link>
           )}
