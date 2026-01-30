@@ -9,31 +9,37 @@ import Loading from '../../../components/Loading';
 export default function PricingForm({ register, onSubmit }) {
   const [activeTab, setActiveTab] = useState('vehiclesRoutes');
 
+  const tabs = [
+    {
+      name: 'Vehicles & Routes',
+      key: 'vehiclesRoutes',
+    },
+    {
+      name: 'Pricing',
+      key: 'pricing',
+    },
+  ];
+
   return (
-    <form onSubmit={onSubmit} className="mt-5">
-      <PricingRuleName register={register} />
+    <form onSubmit={onSubmit}>
+      <div className="flex gap-2 text-sm mb-5">
+        {tabs.map((item) => (
+          <button
+            key={item}
+            onClick={() => setActiveTab(item?.key)}
+            type="button"
+            className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${
+              activeTab === item?.key
+                ? 'bg-primary-900 text-white'
+                : 'bg-primary-900/10 text-black hover:bg-primary-900/20'
+            }`}
+          >
+            {item?.name}
+          </button>
+        ))}
+      </div>
+
       <div className="min-h-[450px] overflow-scroll flex flex-col bg-white p-7 mt-5 rounded-xl shadow-lg">
-        <div className="flex gap-2 text-sm mb-5">
-          {[
-            {
-              name: 'Vehicles & Routes',
-              component: 'vehiclesRoutes',
-            },
-            {
-              name: 'Pricing',
-              component: 'pricing',
-            },
-          ].map((opt, i) => (
-            <button
-              type="button"
-              className={`px-3 py-2 rounded-sm duration-300 cursor-pointer outline-0 ${opt.component === activeTab ? 'bg-primary-900 text-primary-50' : 'bg-primary-200 text-primary-900 hover:bg-primary-300'}`}
-              key={i}
-              onClick={() => setActiveTab(opt.component)}
-            >
-              {opt.name}
-            </button>
-          ))}
-        </div>
         {activeTab === 'vehiclesRoutes' && (
           <VehiclesZones register={register} />
         )}
