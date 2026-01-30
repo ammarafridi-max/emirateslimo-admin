@@ -1,4 +1,4 @@
-export default function accentButtonOutline({
+export default function PrimaryButtonOutline({
   children,
   className = '',
   size = 'medium',
