@@ -1,12 +1,12 @@
 import { useVehicles } from '../hooks/useVehicles';
 import { useDeleteVehicle } from '../hooks/useDeleteVehicle';
 import { useDuplicateVehicle } from '../hooks/useDuplicateVehicle';
+import { Helmet } from 'react-helmet-async';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
 import Table from '../../../components/Table';
 import PrimaryLink from '../../../components/PrimaryLink';
 import Loading from '../../../components/Loading';
-import { Helmet } from 'react-helmet-async';
 
 export default function Vehicles() {
   const { vehicles, isLoadingVehicles } = useVehicles();
@@ -21,7 +21,6 @@ export default function Vehicles() {
         <title>Vehicles</title>
       </Helmet>
 
-      {/* Breadcrumb */}
       <Breadcrumb
         paths={[
           { label: 'Home', href: '/' },
@@ -29,7 +28,6 @@ export default function Vehicles() {
         ]}
       />
 
-      {/* Page Header */}
       <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
         <PageHeading>Vehicles</PageHeading>
         <PrimaryLink to="/vehicles/create" size="small">
@@ -37,7 +35,6 @@ export default function Vehicles() {
         </PrimaryLink>
       </div>
 
-      {/* Vehicles Table */}
       {vehicles?.length > 0 ? (
         <Table $columntemplate="4fr_2fr_4fr">
           <Table.Head>
@@ -76,7 +73,7 @@ export default function Vehicles() {
                 </div>
               </Table.Item>
 
-              {/* Pricing */}
+      
               <Table.Item>
                 <div className="space-y-1 text-[14px]">
                   <div className="flex justify-between">
@@ -100,7 +97,7 @@ export default function Vehicles() {
                 </div>
               </Table.Item>
 
-              {/* Actions */}
+      
               <Table.Item textAlign="right">
                 <div className="flex justify-end gap-3">
                   <Table.DuplicateLink
