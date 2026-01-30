@@ -33,12 +33,9 @@ export default function UpdateVehicle() {
       });
     }
   }, [vehicle, reset]);
-
-  // ✅ Submit handler
   function onSubmit(data) {
     const formData = new FormData();
 
-    // Text fields
     formData.append('brand', data.brand);
     formData.append('model', data.model);
     formData.append('year', data.year);
@@ -49,7 +46,6 @@ export default function UpdateVehicle() {
     formData.append('fuel', data.fuel);
     formData.append('class', data.class);
 
-    // Pricing
     formData.append(
       'pricing',
       JSON.stringify({
@@ -59,7 +55,6 @@ export default function UpdateVehicle() {
       })
     );
 
-    // Optional image uploads (user may not change these)
     if (data?.featuredImage?.[0]) {
       formData.append('featuredImage', data.featuredImage[0]);
     }
@@ -76,7 +71,6 @@ export default function UpdateVehicle() {
       data.pricePerKm
     );
 
-    // Trigger mutation
     updateVehicle({ id, formData });
   }
 
@@ -98,7 +92,7 @@ export default function UpdateVehicle() {
         ]}
       />
 
-      <PageHeading>{vehicleName}</PageHeading>
+      <PageHeading className="mb-5">{vehicleName}</PageHeading>
 
       <VehicleForm
         vehicle={vehicle}
