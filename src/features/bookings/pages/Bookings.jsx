@@ -1,16 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import { useBookings } from '../hooks/useBookings';
-import { useDeleteBooking } from '../hooks/useDeleteBooking';
 import Loading from '../../../components/Loading';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
+import PrimaryLink from '../../../components/PrimaryLink';
 import Table from '../../../components/Table';
+import SuccessPill from '../../../components/SuccessPill';
+import DangerPill from '../../../components/DangerPill';
 import BookingsFilter from '../components/BookingsFilter';
 
 export default function Bookings() {
   const { bookings, isLoadingBookings } = useBookings();
-  const { deleteBooking, isDeletingBooking } = useDeleteBooking();
-
   if (isLoadingBookings) return <Loading />;
 
   return (
@@ -26,15 +26,18 @@ export default function Bookings() {
         ]}
       />
 
-      <PageHeading className="mb-6 flex gap-6 items-center justify-between">
-        Bookings
-      </PageHeading>
+      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <PageHeading>Bookings</PageHeading>
+        <PrimaryLink to="/bookings/calendar" size="small">
+          Calendar
+        </PrimaryLink>
+      </div>
 
       <BookingsFilter />
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         {bookings?.length > 0 ? (
-          <Table $columntemplate="2fr 6fr 1fr 1fr">
+          <Table $columntemplate="2fr 7fr 1fr">
             <Table.Head>
               <Table.Heading>Booking</Table.Heading>
               <Table.Heading>Trip Information</Table.Heading>
@@ -43,15 +46,10 @@ export default function Bookings() {
 
             {bookings.map((b) => (
               <Table.Row key={b._id} href={`/bookings/${b._id}`}>
-                {/* Booking Information */}
                 <Table.Item>
                   <div className="flex flex-col gap-1">
-                    <span className="font-normal text-gray-900 capitalize">
-                      {b.tripType} trip
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {b.bookingRef}
-                    </span>
+                    <span className="font-normal text-gray-900 capitalize">{b.tripType} trip</span>
+                    <span className="text-sm text-gray-500">{b.bookingRef}</span>
                     <span className="text-sm text-gray-500">
                       {new Date(b.createdAt).toLocaleString('en-GB', {
                         day: '2-digit',
@@ -67,58 +65,42 @@ export default function Bookings() {
                   </div>
                 </Table.Item>
 
-                {/* Trip Information */}
                 <Table.Item>
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-0.5">
                     <div className="text-gray-700 font-medium">
                       {b.pickup?.name || b.pickup?.address}
-                      {' > '}
-                      {b.dropoff?.name || b.dropoff?.address}
+                      {b.dropoff.name && ' > ' + (b.dropoff?.name || b.dropoff?.address)}
                     </div>
-                    <div className="text-sm text-primary-400">
-                      <span className="font-medium text-gray-900">Zones:</span>
+                    <div className="text-sm font-light text-primary-500">
                       {'  '}
-                      {b?.pickup?.zone?.name} {' > '} {b?.dropoff?.zone?.name}
+                      {b?.pickup?.zone?.name}
+                      {b?.dropoff?.zone?.name && ' > ' + b?.dropoff?.zone?.name}
                     </div>
-                    <div className="text-sm text-primary-400">
-                      <span className="font-medium text-gray-900">Pickup:</span>{' '}
-                      {b.pickupDate} • {b.pickupTime}
+                    <div className="text-sm font-light text-primary-500">
+                      {new Date(b.pickupDate).toLocaleString('en-GB', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                      })}{' '}
+                      • {b.pickupTime}
                     </div>
-                    <div className="text-sm text-primary-400">
-                      <span className="font-medium text-gray-900">
-                        Vehicle:
-                      </span>{' '}
+                    <div className="text-sm font-light text-primary-500">
                       {b.vehicle?.brand} {b.vehicle?.model}
                     </div>
                   </div>
                 </Table.Item>
 
-                {/* Amount */}
                 <Table.Item textAlign="right">
                   <div className="flex flex-col items-end gap-1">
                     <span className="font-semibold text-gray-900">
-                      {b?.orderSummary?.currency.toUpperCase()}{' '}
-                      {b?.orderSummary?.total?.toLocaleString()}
+                      {b?.orderSummary?.currency.toUpperCase()} {b?.orderSummary?.total?.toLocaleString()}
                     </span>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold w-fit ${
-                        b.bookingDetails?.payment?.status === 'PAID'
-                          ? 'bg-green-100 text-green-700'
-                          : b.bookingDetails?.payment?.status === 'PENDING'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-red-100 text-red-700'
-                      }`}
-                    >
-                      {b.bookingDetails?.payment?.status || 'UNPAID'}
-                    </span>
+                    {b.payment?.status.toUpperCase() === 'PAID' ? (
+                      <SuccessPill>PAID</SuccessPill>
+                    ) : (
+                      <DangerPill>UNPAID</DangerPill>
+                    )}
                   </div>
-                </Table.Item>
-
-                <Table.Item>
-                  <Table.DeleteLink
-                    onClick={() => deleteBooking(b?._id)}
-                    isDeleting={isDeletingBooking}
-                  />
                 </Table.Item>
               </Table.Row>
             ))}
